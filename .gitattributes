@@ -1,0 +1,6 @@
+* text=auto
+*.bat text eol=crlf
+*.html text eol=lf
+*.md text eol=lf
+*.exe -text
+*.zip -text

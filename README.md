@@ -1,5 +1,11 @@
 # Console Image Tool
 
+This repository also includes a separate **Image Studio web edition** in
+[`web/`](web/README.md). Open `web/public/index.html` to try it locally; only that
+public folder is intended for website hosting. The Windows console application
+and its portable ZIP remain independent. The web edition is not included in the
+desktop portable ZIP.
+
 A local Windows console image editor for logos and other images. Batch processing,
 backgrounds, conversion, RGB inversion and compression. Originals are preserved;
 existing output names receive a numbered suffix instead of being overwritten.
