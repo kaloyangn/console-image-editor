@@ -99,7 +99,10 @@ web/
   AGENTS.md          browser-edition guidance
   README.md          this guide (not a deployment file)
   public/
-    index.html       complete browser application; source and deployable output
+    index.html       complete browser application; canonical source
+  deploy/            drag the contents of this folder into the FTP web root
+    console-image-editor/
+      index.html     ready-to-deploy copy, identical to public/index.html
   release/
     Image-Studio-Web.zip   web-only recipient package, ignored by Git
 ```
@@ -117,28 +120,39 @@ Build command: **none**. Edit the inline CSS/classic JavaScript in
 SVG assets, WASM or server config is used. Do not introduce a normal framework
 module build without adapting it to the shared hosting guide.
 
-From the repository root, refresh the separate web package:
+From the repository root, refresh the deployment folder and separate web package
+after editing the canonical application:
 
 ```powershell
 New-Item -ItemType Directory -Path web\release -Force | Out-Null
-Compress-Archive -LiteralPath web\public\index.html -DestinationPath web\release\Image-Studio-Web.zip -Force
+New-Item -ItemType Directory -Path web\deploy\console-image-editor -Force | Out-Null
+Copy-Item -LiteralPath web\public\index.html -Destination web\deploy\console-image-editor\index.html -Force
+Compress-Archive -LiteralPath web\deploy\console-image-editor -DestinationPath web\release\Image-Studio-Web.zip -Force
 ```
 
-Only `index.html` belongs in this ZIP. Do not include development files, desktop
-executables, private images, Git metadata, credentials or temporary QA pages.
-The existing desktop ZIP recipe/package stays independent.
+The ZIP contains `console-image-editor/index.html`, matching the deployment
+folder layout. Do not include development files, desktop executables, private
+images, Git metadata, credentials or temporary QA pages. The existing desktop
+ZIP recipe/package stays independent.
 
 ## Manual Vivacom deployment
 
 
-1. Extract the web ZIP locally, or use `web/public/` directly.
+1. Open **`web/deploy/`** locally, or extract the web ZIP. Either contains the
+   ready-to-upload **`console-image-editor`** folder.
 2. In FileZilla, use your established Vivacom connection. Keep FTP credentials
    out of app files and logs. The supplied audit reports unencrypted FTP.
-3. Create a dedicated `image-tool` directory under the site's document root.
-   Confirm the actual document root in your connection; no server path is assumed.
-4. Upload only `index.html` into that directory. Keep any previous version locally
-   for rollback; leave your homepage and other applications alone.
-5. Visit `/image-tool/` on your actual current hostname.
+3. Open your website's document root in FileZilla's remote pane. Confirm the
+   actual document root in your connection; no server path is assumed.
+4. Drag the **contents of `web/deploy/`** (the `console-image-editor` folder) into
+   that remote root. Do not upload the enclosing `web` or `deploy` folders.
+   The resulting remote file must be `console-image-editor/index.html` relative
+   to your web root. For an update, keep the previous file locally for rollback
+   and replace only this app's file; leave your homepage and other apps alone.
+5. Visit **`mysite.com/console-image-editor/index.html`**, substituting your actual
+   hostname and its available HTTP/HTTPS scheme. No installation, build or server
+   configuration is needed. `/console-image-editor/` can also use the host's
+   directory index behavior.
 6. Follow the actual-host checklist below. For an update, upload the replacement
    HTML and hard-refresh. Do not rely on configurable cache/rewrite/MIME headers.
    Roll back by restoring the previous `index.html` if needed.
