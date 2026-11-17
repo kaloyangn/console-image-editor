@@ -152,12 +152,12 @@ Temporary automated image checks and interactive browser checks are used during
 development; fixtures and harnesses are removed before handoff. Results from
 desktop tests do not establish correctness of this edition.
 
-Observed on 18 November 2026 in the local in-app Chromium browser: **29/29
+Observed on 18 November 2026 in the local in-app Chromium browser: **30/30
 integration checks passed**, covering pixel-level backgrounds/alpha/inversion,
 validation, original-byte preservation, SVG sizing/gradients/rejections, SVGZ,
 APNG rejection, animated GIF first frame, JPEG/WebP round trips, ICO headers and
 dimensions, small/large PNG compression, output naming, ZIP structure, batch
-chains, reruns and isolated per-file failures. The real UI sample/action-chain
+chains, reruns, isolated per-file failures and stop/restart. The real UI sample/action-chain
 flow and ZIP download passed; the downloaded PNG was independently extracted
 with .NET and inspected with the bundled Windows ImageMagick engine. Desktop
 and 390-pixel responsive layouts were observed with no horizontal overflow on
