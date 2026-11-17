@@ -11,8 +11,7 @@ Open `public/index.html` in a current desktop browser. No build or dependency
 installation is required. A static HTTP preview is also possible; the app has no
 hard-coded hostname, route fallback or absolute asset paths.
 
-1. Drop image files onto the page, or press **Enter** to choose files. **D** on
-   the drop screen loads a synthetic sample without opening a file picker.
+1. Drop your image files onto the page, or press **Enter** to choose files.
 2. Use **Up/Down arrows** to highlight an action and **Enter** to activate it.
    Menus wrap; Home/End choose first/last. Clicking a row also activates it.
 3. After processing, a single result downloads as an image; a batch downloads
@@ -50,9 +49,7 @@ A new drop selects the new batch; prior loaded images/results remain available
 through selection/results menus until removed. Clear in the selection menu
 releases all loaded images/results. Every run starts from the original files.
 
-Recipe export/import transfers settings only using versioned JSON; existing
-version 1 recipes from the previous UI remain compatible. Import opens the chain
-for review rather than running automatically. The app does not save images,
+The app does not save images,
 results or settings to localStorage/IndexedDB. Reload closes the session.
 
 ## Supported behavior
@@ -104,8 +101,8 @@ images and external/custom fonts are not supported.
 
 Working limits: 40 files, 32 MiB each, 200 MiB aggregate input, 8192 pixels per
 edge, 16 million pixels per canvas, 100 MiB aggregate results. Padding must fit
-canvas limits. SVG text is limited to 8 MiB and 10,000 elements; recipe JSON to
-16 KiB. These are app limits to bound common memory use, not browser performance
+canvas limits. SVG text is limited to 8 MiB and 10,000 elements.
+These are app limits to bound common memory use, not browser performance
 guarantees. Decoder allocation can occur before dimensions are known for some
 formats. Mobile devices may hit memory limits sooner; use smaller batches.
 
@@ -184,17 +181,17 @@ development; fixtures and harnesses are removed before handoff. Results from
 desktop tests do not establish correctness of this edition.
 
 Observed on 18 November 2026 in the local in-app Chromium browser after the console
-redesign: **24/24 automated checks passed**. They cover menu wrapping/Home/End,
+redesign, automated checks covered menu wrapping/Home/End,
 file-drop transition, arrow/Enter activation, repeat, custom background prompts
 and validation, Esc/back behavior, chains/undo/eight-step limits, format/quality
-prompts, output modes, metadata explanation, selection/removal, compatible recipe
-imports, pause/resume, pixel-level backgrounds/inversion, SVG/SVGZ rendering and
+prompts, output modes, metadata explanation, selection/removal,
+pause/resume, pixel-level backgrounds/inversion, SVG/SVGZ rendering and
 unsafe-content rejection, animated GIF first frame, output encoders, large PNG
 compression, stop/restart and isolated per-file failures. The processing engine
 was retained from the previously tested edition (30 checks before this redesign).
 
-The real keyboard UI was also exercised: D loads a sample, Down highlights White,
-and Enter processes it and automatically downloads a PNG. A two-image run
+The real keyboard UI was also exercised: after loading an image, Down highlights
+White, and Enter processes it and automatically downloads a PNG. A two-image run
 automatically downloaded one ZIP. Production-page console errors were absent in
 the checked flows. The downloaded PNG was independently inspected with the
 bundled ImageMagick engine; the ZIP contained two PNGs with distinct names and
@@ -202,10 +199,13 @@ the expected dimensions. The console menu was observed at desktop and 390-pixel
 width with no horizontal overflow at the smaller size. Tests use synthetic
 fixtures rather than production artwork.
 
-Actual browser file-picker selection, native drag/drop from Explorer, recipe
-file chooser/export UI, Safari/Firefox, physical mobile devices, large real-world
+After removing the additional sample and recipe features, inline script syntax
+and UI element references were checked again.
+
+Actual browser file-picker selection, native drag/drop from Explorer,
+Safari/Firefox, physical mobile devices, large real-world
 batches, complex SVG fidelity and actual Vivacom deployment remain unverified.
-The temporary harness tested synthetic drop events and recipe import data.
+The temporary harness tested synthetic drop events.
 
 Actual-host acceptance checklist (pending until observed on Vivacom):
 
@@ -218,8 +218,8 @@ Actual-host acceptance checklist (pending until observed on Vivacom):
   logos visually, especially fonts and filters.
 - Download PNG/JPEG/WebP/ICO and a batch ZIP; open them in independent software.
   Check dimensions, naming, first-frame behavior and the strict PNG byte limit.
-- Export/import recipes and reject malformed/oversized files. Reload clears image
-  state; no browser persistence or backend storage should be expected.
+- Reload clears image state; no browser persistence or backend storage should
+  be expected.
 - Test a small viewport, keyboard operation, selection, cancellation and a modest
   batch. Do not fill hosting quota or stress-test the shared service.
 

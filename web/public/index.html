@@ -26,9 +26,8 @@
 <progress id="progress" value="0" max="1" aria-label="Processing progress" hidden></progress>
 <section id="results" class="results" aria-label="Processing results" hidden></section>
 <section id="preview" class="preview" aria-label="Image preview" hidden data-native-keyboard><header><span id="preview-name"></span><button class="plain" id="close-preview">[×] Close preview</button></header><div class="preview-images"><figure><figcaption>Original</figcaption><img id="preview-original" alt=""></figure><figure id="result-figure"><figcaption>Result</figcaption><img id="preview-result" alt=""></figure></div></section>
-<footer class="support" data-native-keyboard><div class="links"><button id="choose-native" class="plain">Choose images</button><button id="sample-native" class="plain">Load sample</button><button id="export-recipe" class="plain">Export recipe</button><button id="import-recipe" class="plain">Import recipe</button></div><p>Files stay on this device. Downloads use your browser’s save location.</p><details id="help"><summary>Browser differences, formats & limits</summary><ul><li>This is a browser mirror of the console workflow. It cannot run the Windows ImageMagick engine. Inputs: PNG, JPEG, WebP, GIF and a restricted static SVG subset. Outputs: PNG, JPEG, WebP (when supported) and ICO. GIF/WebP animation uses the default/first frame; APNG is rejected. No TIFF, PSD, HEIC, AVIF, PDF, layers or animation editing.</li><li>SVG renders at a minimum longest edge of 2048, preserving aspect and larger dimensions. Raster inputs are not enlarged automatically. Scripts, animations, embedded images, external references and style sheets in SVG are rejected. Fonts and filters may differ. SVGZ needs the browser’s built-in gzip decoder.</li><li>Backgrounds trim transparent edges only; opaque backgrounds stay intact. Padding is 0..4096 whole pixels per side. Compression produces PNG strictly below 5 MiB, with possible color/size loss. Put compression last in a chain.</li><li>Source metadata is not copied. The browser may add color or resolution information. Copyright-only retention is unavailable. Output [O] controls automatic/manual downloads, not filesystem folders. The browser controls existing-file collisions. Export/import recipes to keep settings; images and settings are not persisted after reload.</li><li>Limits: 40 files, 32 MiB each, 200 MiB total input; 8192 pixels per edge, 16 million pixels per canvas, 100 MiB total output; SVG up to 8 MiB/10,000 elements; recipes up to 16 KiB. Limits bound common memory use, not guarantee performance.</li><li>The app makes no upload, analytics or external dependency requests. HTTP delivery is unencrypted; use trusted hosting and avoid sensitive images there. Valid HTTPS and actual Vivacom deployment remain unverified.</li><li>Press a letter shortcut to activate immediately, or use ↑/↓ and Enter. Menus wrap. Home/End select first/last. In an action chain, Enter activates the highlighted row; after adding a step the Run row is selected. Backspace undoes the last step. Esc cancels a prompt/menu; during processing it stops after the current file. On the drop screen Esc pauses the session instead of closing a browser tab.</li></ul></details></footer>
+<footer class="support" data-native-keyboard><div class="links"><button id="choose-native" class="plain">Choose images</button></div><p>Files stay on this device. Downloads use your browser’s save location.</p><details id="help"><summary>Browser differences, formats & limits</summary><ul><li>This is a browser mirror of the console workflow. It cannot run the Windows ImageMagick engine. Inputs: PNG, JPEG, WebP, GIF and a restricted static SVG subset. Outputs: PNG, JPEG, WebP (when supported) and ICO. GIF/WebP animation uses the default/first frame; APNG is rejected. No TIFF, PSD, HEIC, AVIF, PDF, layers or animation editing.</li><li>SVG renders at a minimum longest edge of 2048, preserving aspect and larger dimensions. Raster inputs are not enlarged automatically. Scripts, animations, embedded images, external references and style sheets in SVG are rejected. Fonts and filters may differ. SVGZ needs the browser’s built-in gzip decoder.</li><li>Backgrounds trim transparent edges only; opaque backgrounds stay intact. Padding is 0..4096 whole pixels per side. Compression produces PNG strictly below 5 MiB, with possible color/size loss. Put compression last in a chain.</li><li>Source metadata is not copied. The browser may add color or resolution information. Copyright-only retention is unavailable. Output [O] controls automatic/manual downloads, not filesystem folders. The browser controls existing-file collisions. Images and settings are not persisted after reload.</li><li>Limits: 40 files, 32 MiB each, 200 MiB total input; 8192 pixels per edge, 16 million pixels per canvas, 100 MiB total output; SVG up to 8 MiB/10,000 elements. Limits bound common memory use, not guarantee performance.</li><li>The app makes no upload, analytics or external dependency requests. HTTP delivery is unencrypted; use trusted hosting and avoid sensitive images there. Valid HTTPS and actual Vivacom deployment remain unverified.</li><li>Press a letter shortcut to activate immediately, or use ↑/↓ and Enter. Menus wrap. Home/End select first/last. In an action chain, Enter activates the highlighted row; after adding a step the Run row is selected. Backspace undoes the last step. Esc cancels a prompt/menu; during processing it stops after the current file. On the drop screen Esc pauses the session instead of closing a browser tab.</li></ul></details></footer>
 <input id="file-input" type="file" multiple accept=".png,.jpg,.jpeg,.webp,.gif,.svg,.svgz,.svg.gz" hidden>
-<input id="recipe-file" type="file" accept=".json,application/json" hidden>
 <script>
 'use strict';
 (() => {
@@ -99,7 +98,7 @@ async function encode(c,format,quality){
  if(format==='jpeg'){const white=canvas(c.width,c.height),g=ctx(white);g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(c,0,0);try{return await blob(white,mime.jpeg,quality);}finally{release(white);}}
  return blob(c,mime[format],quality);
 }
-function validateStep(raw){if(!raw||typeof raw!=='object'||!['background','invert','compress','convert'].includes(raw.type))throw Error('Invalid action in recipe.');const s={type:raw.type};if(s.type==='background'){if(typeof raw.color!=='string'||!/^#?(?:[\da-f]{3}|[\da-f]{6})$/i.test(raw.color))throw Error('Use a 3- or 6-digit hex color, with one optional #.');s.color='#'+raw.color.replace(/^#/,'').toLowerCase();if(!Number.isInteger(raw.padding)||raw.padding<0||raw.padding>4096)throw Error('Padding must be a whole number from 0 to 4096 per side.');s.padding=raw.padding;}if(s.type==='convert'){if(!Object.hasOwn(mime,raw.format))throw Error('Unsupported output format.');if(typeof raw.quality!=='number'||!Number.isFinite(raw.quality)||raw.quality<.1||raw.quality>1)throw Error('Quality must be between 10% and 100%.');s.format=raw.format;s.quality=raw.quality;}return s;}
+function validateStep(raw){if(!raw||typeof raw!=='object'||!['background','invert','compress','convert'].includes(raw.type))throw Error('Invalid action.');const s={type:raw.type};if(s.type==='background'){if(typeof raw.color!=='string'||!/^#?(?:[\da-f]{3}|[\da-f]{6})$/i.test(raw.color))throw Error('Use a 3- or 6-digit hex color, with one optional #.');s.color='#'+raw.color.replace(/^#/,'').toLowerCase();if(!Number.isInteger(raw.padding)||raw.padding<0||raw.padding>4096)throw Error('Padding must be a whole number from 0 to 4096 per side.');s.padding=raw.padding;}if(s.type==='convert'){if(!Object.hasOwn(mime,raw.format))throw Error('Unsupported output format.');if(typeof raw.quality!=='number'||!Number.isFinite(raw.quality)||raw.quality<.1||raw.quality>1)throw Error('Quality must be between 10% and 100%.');s.format=raw.format;s.quality=raw.quality;}return s;}
 function uniqueName(name,format){let base=name.replace(/\.(?:svg\.gz|[^.]+)$/i,'').replace(/[<>:"/\\|?*\x00-\x1f]/g,'_').replace(/[. ]+$/,'').slice(0,100)||'image';if(/^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(base))base='_'+base;const ext=format==='jpeg'?'jpg':format;let candidate=base+'_edited.'+ext,n=2;while(state.names.has(candidate.toLowerCase()))candidate=base+'_edited_'+n+++'.'+ext;state.names.add(candidate.toLowerCase());return candidate;}
 function download(data,name){const url=URL.createObjectURL(data),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
 const crcTable=Uint32Array.from({length:256},(_,i)=>{let c=i;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
@@ -195,7 +194,7 @@ function render(focus = true) {
   $('chain-log').hidden = screen !== 'chain';
   if (screen === 'drop') {
     title = 'Drop image files onto this page, or press Enter to choose files:';
-    rows = [row('Enter', 'Choose image files...', chooseFiles), row('D', 'Load a sample image', () => void sample())];
+    rows = [row('Enter', 'Choose image files...', chooseFiles)];
     if (state.items.length) rows.push(row('L', 'Use loaded images (' + selected().length + ' selected)', () => go(selected().length ? 'actions' : 'files')));
     if (state.items.length) rows.push(row('S', 'Select / remove loaded images...', () => go('files')));
     if (state.items.some(i => i.output)) rows.push(row('V', 'Show previous results', () => go('results')));
@@ -293,8 +292,7 @@ function render(focus = true) {
     b.onfocus = () => { ui.index = index; paintSelection(false); };
     $('menu').append(b);
   });
-  for (const id of ['choose-native', 'sample-native', 'export-recipe', 'import-recipe']) $(id).disabled = state.busy;
-  $('export-recipe').disabled = state.busy || !(state.chain.length || state.last);
+  for (const id of ['choose-native']) $(id).disabled = state.busy;
   if (screen === 'results') renderResults();
   if (!$('prompt-form').hidden && focus) $('prompt-input').focus({ preventScroll: true });
   else paintSelection(focus);
@@ -453,7 +451,7 @@ async function process(rawSteps) {
         i.outputPreview = await previewURL(c);
         i.output = encoded; i.outputName = uniqueName(i.name, format);
         i.outputWidth = c.width; i.outputHeight = c.height;
-        i.recipe = steps.map(s => ({ ...s })); i.lossy = lossy;
+        i.steps = steps.map(s => ({ ...s })); i.lossy = lossy;
         success++;
       } catch (e) { i.runError = e.message; errors++; }
       finally { release(c); i.seconds = (performance.now() - start) / 1000; }
@@ -491,7 +489,7 @@ function renderResults() {
       line('After:  ' + i.outputWidth + 'x' + i.outputHeight + '  ' + size(i.output.size) + '  (' + (change > 0 ? '+' : '') + change + '%)', 'green');
       line('Time:   ' + i.seconds.toFixed(2) + ' s', 'dim');
       line('Output: ' + i.outputName);
-      line(stepsLabel(i.recipe) + (i.lossy ? ' [color/size reduced]' : ''), 'dim');
+      line(stepsLabel(i.steps) + (i.lossy ? ' [color/size reduced]' : ''), 'dim');
       const actions = document.createElement('div'); actions.className = 'actions'; actions.dataset.nativeKeyboard = '';
       for (const [label, fn] of [['[Download]', () => download(i.output, i.outputName)], ['[Preview]', () => showPreview(i)]]) {
         const b = document.createElement('button'); b.className = 'plain'; b.textContent = label; b.onclick = fn; actions.append(b);
@@ -521,35 +519,6 @@ async function downloadZip() {
   finally { state.busy = false; go('results'); status(failure ? 'ZIP failed: ' + failure : 'ZIP download requested.', !!failure); }
 }
 
-async function sample() {
-  if (state.busy) return;
-  const c = canvas(240,100), g = ctx(c);
-  g.fillStyle = '#008080'; g.fillRect(15,15,210,70);
-  g.fillStyle = '#fff'; g.font = 'bold 24px monospace'; g.fillText('IMAGE TOOL',42,59);
-  try { await addFiles([new File([await blob(c)], 'sample.png', { type: 'image/png' })]); }
-  finally { release(c); }
-}
-
-function exportRecipe() {
-  try {
-    const steps = (ui.screen === 'chain' ? state.chain : state.last || state.chain).map(validateStep);
-    if (!steps.length) throw Error('Run an action or build a chain before exporting a recipe.');
-    download(new Blob([JSON.stringify({ app: 'image-studio', version: 1, steps }, null, 2)], { type: 'application/json' }), 'Console-Image-Tool-recipe.json');
-  } catch (e) { status(e.message, true); }
-}
-
-async function importRecipe(file) {
-  if (!file || state.busy) return;
-  try {
-    if (file.size > 16384) throw Error('Recipe exceeds 16 KiB.');
-    const data = JSON.parse(await file.text());
-    if (data.app !== 'image-studio' || data.version !== 1 || !Array.isArray(data.steps) || !data.steps.length || data.steps.length > 8) throw Error('Choose a version 1 recipe with 1–8 steps.');
-    const steps = data.steps.map(validateStep);
-    if (state.busy) throw Error('Wait for processing to finish, then import again.');
-    state.chain = steps; go('chain');
-    status('Recipe loaded. Review the chain, then press Enter to run.');
-  } catch (e) { status('Recipe not imported: ' + e.message, true); }
-}
 
 document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
@@ -582,10 +551,6 @@ $('prompt-form').onsubmit = e => { e.preventDefault(); submitPrompt(); };
 $('prompt-back').onclick = back;
 $('file-input').onchange = () => { const files = [...$('file-input').files]; $('file-input').value = ''; void addFiles(files); };
 $('choose-native').onclick = chooseFiles;
-$('sample-native').onclick = () => void sample();
-$('export-recipe').onclick = exportRecipe;
-$('import-recipe').onclick = () => $('recipe-file').click();
-$('recipe-file').onchange = () => { const file = $('recipe-file').files[0]; $('recipe-file').value = ''; void importRecipe(file); };
 $('close-preview').onclick = () => { $('preview').hidden = true; paintSelection(); };
 let dragDepth = 0;
 document.addEventListener('dragenter', e => { e.preventDefault(); dragDepth++; $('terminal').classList.add('drag'); });
