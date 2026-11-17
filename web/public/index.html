@@ -3,37 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="A local browser workspace for image backgrounds, conversion and compression.">
-<meta name="color-scheme" content="light">
+<meta name="description" content="Console Image Tool in your browser. Drop images, choose with the arrows, press Enter to process and download.">
+<meta name="color-scheme" content="dark">
 <link rel="icon" href="data:,">
-<title>Image Studio — Web edition</title>
+<title>Console Image Tool — Web</title>
 <style>
-:root{--paper:#f6f5f0;--panel:#fff;--ink:#24362f;--muted:#6c7771;--line:#dee3da;--green:#216749;--tint:#edf4e9;--warn:#995322;--shadow:0 10px 35px #26382c08;font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--paper);font-size:14px}
-*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,a,input,select{outline-offset:4px}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{cursor:default;opacity:.45}button{border:1px solid var(--line);background:white;border-radius:8px;color:var(--ink);padding:10px 14px;font-weight:600}button:hover:not(:disabled){background:var(--tint)}.primary{background:var(--green);color:white;border-color:var(--green)}.primary:hover:not(:disabled){background:#174e37}.quiet{background:transparent}.small{padding:7px 10px;font-size:12px}.muted{color:var(--muted)}.eyebrow{text-transform:uppercase;letter-spacing:1.7px;font-size:10px;font-weight:700;color:var(--muted)}header{max-width:1600px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:22px 32px;border-bottom:1px solid var(--line);gap:12px}.brand{display:flex;align-items:center;gap:11px;font-size:19px;font-weight:700;letter-spacing:-.7px}.mark{width:32px;height:32px;border-radius:9px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:22px}.brand small{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border-left:1px solid var(--line);padding-left:13px;margin-left:5px;color:var(--muted)}.local{font-size:12px;display:flex;align-items:center;gap:7px}.dot{width:6px;height:6px;border-radius:50%;background:var(--green)}main{max-width:1600px;margin:auto;padding:30px 32px 18px}.intro{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:25px}h1{font-size:29px;letter-spacing:-1px;margin:8px 0}p{line-height:1.6}.intro p{margin:0;color:var(--muted)}.layout{display:grid;grid-template-columns:248px minmax(280px,1fr) 310px;gap:20px;align-items:start}.panel{border:1px solid var(--line);border-radius:13px;background:var(--panel);box-shadow:var(--shadow);overflow:hidden}.panel-head{padding:17px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}h2{font-size:14px;letter-spacing:-.2px;margin:0}.count{font-size:11px;background:var(--paper);padding:3px 7px;border-radius:5px;color:var(--muted)}.pad{padding:18px}.drop{display:block;text-align:center;border:1px dashed #a6b7a6;background:#f8faf5;border-radius:9px;padding:24px 10px;width:100%;font-weight:600;line-height:1.7}.drop.drag{background:#dcefd9;border-color:var(--green)}.drop b{display:block;font-size:24px;font-weight:400;color:var(--green);line-height:1.4}.drop small{display:block;font-size:11px;font-weight:400;color:var(--muted)}.file-toolbar{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:12px 0 0}.file-toolbar label{display:flex;align-items:center;gap:5px}input[type=checkbox]{accent-color:var(--green)}.files{max-height:480px;overflow:auto}.file{display:flex;align-items:center;gap:8px;padding:12px;border-top:1px solid var(--line);border-left:3px solid transparent}.file.active{background:#f0f5ed;border-left-color:var(--green)}.file-check{flex:none}.file-open{border:0;border-radius:0;padding:0;display:flex;align-items:center;gap:9px;min-width:0;text-align:left;flex:1;background:transparent}.thumb{width:38px;height:38px;object-fit:contain;border:1px solid var(--line);border-radius:5px;background:#f4f4ef;flex:none}.file-copy{min-width:0}.file-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;font-weight:600}.file-detail{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:4px}.remove{border:0;background:transparent;padding:5px;font-size:17px;font-weight:400}.file.error .file-detail{color:#ac3e2c}.empty-files{padding:12px 18px 22px;font-size:12px;color:var(--muted);line-height:1.6}.formats{font-size:11px;color:var(--muted);line-height:1.7;padding:0 18px 16px}.stage-bar{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid var(--line);gap:10px}.segmented{display:flex;gap:3px;background:var(--paper);padding:3px;border-radius:7px}.segmented button{padding:6px 11px;font-size:11px;border:0;background:transparent}.segmented button[aria-pressed=true]{background:white;box-shadow:0 1px 4px #0001}.stage{position:relative;min-height:390px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:25px;background-color:#f8f9f6;background-image:linear-gradient(45deg,#e8ece5 25%,transparent 25%),linear-gradient(-45deg,#e8ece5 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#e8ece5 75%),linear-gradient(-45deg,transparent 75%,#e8ece5 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}.stage img{max-width:100%;max-height:470px;object-fit:contain;filter:drop-shadow(0 6px 18px #142d1b12)}.placeholder{text-align:center;max-width:300px}.placeholder-icon{font-size:50px;color:#819882;margin-bottom:15px}.placeholder h3{font-size:19px;font-weight:600;letter-spacing:-.5px;margin:0}.placeholder p{font-size:12px;color:var(--muted);margin:10px 0 16px}.stage-foot{display:flex;align-items:center;justify-content:space-between;padding:13px 17px;gap:12px;min-height:50px;font-size:11px;color:var(--muted)}.result-name{overflow-wrap:anywhere}.status{margin:16px 0 0;padding:12px 15px;border:1px solid var(--line);border-radius:8px;font-size:12px;line-height:1.7;background:#fafbf7;overflow-wrap:anywhere}.status[data-tone=error]{background:#fff4ed;color:#9a3c23;border-color:#ebc5b4}.batch-results{margin-top:16px}.batch-results summary{cursor:pointer;font-size:12px;font-weight:600}.result-row{display:flex;gap:12px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:11px 0;font-size:12px}.result-row span{overflow-wrap:anywhere;min-width:0}.result-row small{display:block;color:var(--muted);line-height:1.5}.result-row.error{color:#a4422f}.right .pad{padding:16px 18px}label.field{display:block;font-size:11px;font-weight:600;margin-bottom:13px}label.field>span{display:block;margin-bottom:7px}input[type=text],input[type=number],select{padding:10px 11px;border:1px solid var(--line);border-radius:7px;color:var(--ink);background:white;min-width:0;width:100%}input[type=range]{width:100%;accent-color:var(--green)}.field-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}.presets{display:flex;gap:6px;margin:-3px 0 13px}.swatch{display:flex;align-items:center;gap:6px;font-size:11px;padding:6px 8px;font-weight:400}.swatch i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid #bbc3b8}.hint{font-size:11px;color:var(--muted);line-height:1.6;margin:0 0 14px}.wide{width:100%}.chain{list-style:none;padding:0;margin:0 0 12px;counter-reset:steps}.chain li{display:flex;align-items:center;gap:7px;padding:9px 0;border-bottom:1px solid var(--line);font-size:11px}.chain li:before{counter-increment:steps;content:counter(steps);background:var(--tint);color:var(--green);border-radius:5px;width:21px;height:21px;display:grid;place-items:center;flex:none;font-weight:700}.chain .label{flex:1;line-height:1.5}.chain button{border:0;padding:5px;background:transparent;font-size:12px}.chain-empty{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:14px}.recipe-buttons{display:flex;gap:7px}.recipe-buttons button{flex:1}.run-block{border-top:1px solid var(--line);padding:16px 18px;background:#f7faf4}.run-block p{font-size:10px;color:var(--muted);margin:9px 0 0;line-height:1.6}.run-actions{display:flex;gap:7px;margin-top:8px}.run-actions button{flex:1}.footnote{max-width:1600px;margin:0 auto;padding:18px 32px 26px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--muted);line-height:1.7}.help{max-width:1600px;margin:18px auto 0;border-top:1px solid var(--line);padding-top:17px}.help summary{font-size:12px;cursor:pointer;font-weight:600}.help-content{max-width:900px;font-size:12px;line-height:1.7;color:var(--muted)}.help-content li{margin-bottom:7px}progress{width:100%;height:5px;accent-color:var(--green);margin-top:12px}[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}button:focus-visible,a:focus-visible{outline:2px solid var(--green)}@media(min-width:1450px){.stage{min-height:490px}}@media(max-width:1120px){.layout{grid-template-columns:210px minmax(250px,1fr) 275px;gap:12px}main{padding:24px 20px}.stage{min-height:350px}}@media(max-width:920px){.layout{grid-template-columns:210px minmax(0,1fr)}.right{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}.right>.panel-head{grid-column:1/-1}.right>.run-block{grid-column:1/-1}.right>.pad+.pad{border-left:1px solid var(--line)}.intro h1{font-size:25px}}@media(max-width:600px){header{padding:17px 16px}.brand{font-size:17px}.brand small{display:none}.local{font-size:10px}main{padding:22px 14px 12px}.intro{align-items:start}.intro p{font-size:12px}.intro>button{font-size:11px;padding:8px}.layout{display:flex;flex-direction:column}.layout>*{width:100%}.files{max-height:200px}.drop{padding:15px}.stage{min-height:300px}.right{display:block}.right>.pad+.pad{border-left:0;border-top:1px solid var(--line)}.footnote{padding:15px;display:block}.footnote span{display:block}.stage-foot{align-items:start}.intro h1{font-size:24px}}
+:root{font-family:Consolas,"Cascadia Mono","Courier New",monospace;font-size:16px;line-height:1.55;color:#ccc;background:#0c0c0c;color-scheme:dark;--cyan:#49d7df;--dim:#909090;--green:#83df86;--yellow:#e7d479;--red:#ff9696}
+*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{color:inherit;cursor:pointer}button:disabled{cursor:default;color:#767676}button:focus-visible,summary:focus-visible,a:focus-visible{outline:1px solid var(--cyan);outline-offset:3px}main{max-width:1040px;min-height:100svh;margin:auto;padding:22px 30px 35px}header{border-bottom:1px solid #303030;padding-bottom:14px;margin-bottom:22px}.titlebar{display:flex;justify-content:space-between;gap:12px;color:var(--dim);font-size:12px;margin-bottom:22px}h1{color:var(--cyan);font-size:18px;font-weight:700;letter-spacing:.5px;margin:0}p{margin:0 0 4px}h2{font-size:16px;font-weight:400;color:#f1f1f1;margin:0 0 10px}.dim{color:var(--dim)}.cyan{color:var(--cyan)}.green{color:var(--green)}.yellow{color:var(--yellow)}.error{color:var(--red)}.hint{font-size:13px;color:var(--dim);margin-top:12px}.line{white-space:pre-wrap;overflow-wrap:anywhere}.file-list{padding:0;margin:0 0 18px;list-style:none;max-height:180px;overflow:auto}.file-list li{overflow-wrap:anywhere}.file-list .file-name{color:#f0f0f0}.menu{display:flex;flex-direction:column;max-height:56svh;min-height:40px;overflow:auto;padding:0;margin:0}.menu-row{position:relative;display:flex;gap:0;text-align:left;width:100%;border:0;border-radius:0;background:transparent;padding:3px 12px 3px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.55;flex:none}.menu-row .arrow{flex:none;width:2ch;white-space:pre}.menu-row.active{background:#006666;color:#fff}.menu-row[aria-disabled=true]{color:#888}.menu-row.active[aria-disabled=true]{color:#b8c3c3}.menu-row:hover{background:#183b3d}.menu-row.active:hover{background:#006666}.menu-row:focus{outline:0}.menu-row:focus-visible{outline:1px solid #4edbe4;outline-offset:-1px}.terminal.drag{outline:1px dashed var(--cyan);outline-offset:12px}.status{min-height:1.6em;margin:16px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--green)}.status[data-tone=error]{color:var(--yellow)}#chain-log{color:var(--green);margin:0 0 15px;white-space:pre-wrap;overflow-wrap:anywhere}#prompt-form{margin-top:14px}#prompt-label{display:block;color:var(--cyan);margin-bottom:6px}.input-line{display:flex;gap:1ch;align-items:baseline;color:white}#prompt-input{background:transparent;color:white;border:0;border-bottom:1px solid #606060;outline:none;padding:2px 0;width:min(100%,55ch);border-radius:0;caret-color:var(--cyan)}#prompt-input:focus{border-color:var(--cyan)}.plain{background:none;border:0;padding:0;color:var(--cyan);text-decoration:none;border-radius:0}.plain:hover{text-decoration:underline}.prompt-buttons{display:flex;gap:3ch;margin-top:12px}.results{margin-top:18px}.result{margin-bottom:20px;border-left:1px solid #333;padding-left:14px;overflow-wrap:anywhere}.result .actions{display:flex;gap:3ch;margin-top:6px;flex-wrap:wrap}.result p{margin:0}progress{display:block;width:min(100%,70ch);height:6px;margin:14px 0;accent-color:var(--cyan)}.support{border-top:1px solid #303030;margin-top:28px;padding-top:12px;font-size:12px;color:var(--dim)}.support .links{display:flex;flex-wrap:wrap;gap:2ch;margin-bottom:9px}.support summary{cursor:pointer}.support details{margin-top:10px}.support ul{padding-left:3ch;max-width:100ch}.support li{margin:7px 0}.preview{margin-top:18px;border:1px solid #333;padding:12px;max-width:700px}.preview header{display:flex;justify-content:space-between;gap:12px;margin:0 0 12px;padding:0 0 10px;font-size:12px;align-items:center}.preview-images{display:grid;grid-template-columns:1fr 1fr;gap:12px}.preview figure{margin:0;min-width:0}.preview figcaption{font-size:12px;color:var(--dim);margin-bottom:5px}.preview img{width:100%;height:230px;object-fit:contain;background-color:#222;background-image:linear-gradient(45deg,#333 25%,transparent 25%),linear-gradient(-45deg,#333 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#333 75%),linear-gradient(-45deg,transparent 75%,#333 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}[hidden]{display:none!important}@media(max-width:600px){:root{font-size:14px}main{padding:16px 15px 24px}.titlebar{font-size:11px;margin-bottom:20px}h1{font-size:17px}.menu-row{padding-top:5px;padding-bottom:5px}.menu{max-height:62svh}.preview-images{grid-template-columns:1fr}.preview img{height:180px}.file-list{max-height:150px}}@media(prefers-reduced-motion:no-preference){.caret{animation:blink 1.2s steps(2,start) infinite}@keyframes blink{to{visibility:hidden}}}
 </style>
 </head>
 <body>
-<header><div class="brand"><span class="mark" aria-hidden="true">▧</span> Image Studio <small>Web edition</small></div><span class="local"><i class="dot"></i> Processing stays on your device</span></header>
-<main>
-<section class="intro"><div><div class="eyebrow">Your everyday image workspace</div><h1>A little polish. A better image.</h1><p>Prepare a logo, add a background, or get a whole batch ready to share.</p></div><button id="demo" class="quiet">Try a sample</button></section>
-<div class="layout">
-<section class="panel" aria-labelledby="files-title"><div class="panel-head"><h2 id="files-title">Your images</h2><span id="count" class="count">0 files</span></div><div class="pad"><button id="drop" class="drop"><b aria-hidden="true">＋</b> Choose or drop images<small>Up to 40 files · 32 MiB each</small></button><input id="file-input" type="file" multiple accept=".png,.jpg,.jpeg,.webp,.gif,.svg,.svgz,.svg.gz" hidden><div class="file-toolbar"><label><input id="select-all" type="checkbox" checked> Select all</label><button id="clear" class="small quiet" disabled>Clear</button></div></div><div id="files" class="files"></div><div id="empty-files" class="empty-files">Add files to start. Originals stay untouched.</div><div class="formats">PNG · JPEG · WebP · GIF · SVG<br>SVGZ when your browser supports it</div></section>
-<div class="workspace"><section class="panel" aria-label="Image preview"><div class="stage-bar"><h2>Preview</h2><div class="segmented" aria-label="Preview version"><button id="view-original" aria-pressed="true">Original</button><button id="view-result" aria-pressed="false" disabled>Result</button></div></div><div class="stage" id="stage"><div id="placeholder" class="placeholder"><div class="placeholder-icon" aria-hidden="true">▧</div><h3>Make room for your next idea.</h3><p>Your image will appear here.<br>The checkerboard shows transparent areas.</p><button id="browse" class="primary">Choose images</button></div><img id="preview" alt="" hidden></div><div class="stage-foot"><span id="preview-info">Nothing selected yet</span><button id="download-one" class="small" disabled>Download result ↓</button></div></section><div id="status" class="status" role="status" aria-live="polite">Ready when you are. Add images, choose an action, then process your selection.</div><progress id="progress" max="1" value="0" hidden aria-label="Processing progress"></progress><section class="batch-results"><details id="results-details" hidden><summary id="results-title">Batch results</summary><div id="results"></div></details></section></div>
-<section class="panel right" aria-labelledby="edit-title"><div class="panel-head"><h2 id="edit-title">Make it yours</h2><span class="count">01 / Tools</span></div><div class="pad"><label class="field"><span>Action</span><select id="action"><option value="background">Add a background</option><option value="invert">Invert RGB colors</option><option value="compress">Compress PNG below 5 MiB</option><option value="convert">Convert format</option></select></label><div id="background-fields"><div class="field-pair"><label class="field"><span>Hex color</span><input id="color" type="text" value="#ffffff" maxlength="7" spellcheck="false" aria-describedby="background-hint"></label><label class="field"><span>Padding / side</span><input id="padding" type="number" min="0" max="4096" step="1" value="20"></label></div><div class="presets"><button class="swatch" id="white"><i style="background:white"></i> White</button><button class="swatch" id="black"><i style="background:#111"></i> Black</button></div><p id="background-hint" class="hint">Trim transparent edges, fill transparency, then add padding. Opaque image content is kept.</p></div><div id="convert-fields" hidden><label class="field"><span>Output format</span><select id="format"><option value="png">PNG · transparency</option><option value="jpeg">JPEG · white background</option><option value="webp">WebP · transparency</option><option value="ico">ICO · up to 256 × 256</option></select></label><label class="field" id="quality-field" hidden><span>Quality <output id="quality-value">92%</output></span><input id="quality" type="range" min="10" max="100" value="92"></label><p class="hint">JPEG flattens transparency onto white. Source metadata is not copied into new files.</p></div><p id="action-hint" class="hint" hidden></p><button id="add-step" class="wide">＋ Add to action chain</button></div><div class="pad"><div class="eyebrow" style="margin-bottom:12px">02 / Action chain <span id="step-count">0/8</span></div><ol id="chain" class="chain"></ol><p id="chain-empty" class="chain-empty">One action? Just press Process.<br>For several, add steps in the order you want.</p><p id="chain-hint" class="hint" hidden>Process uses this chain. Add the current action to include it. Put compression last for a final file below 5 MiB.</p><div class="recipe-buttons"><button id="repeat" class="small" disabled>Restore last</button><button id="clear-chain" class="small" disabled>Clear chain</button></div><div class="recipe-buttons" style="margin-top:7px"><button id="export-recipe" class="small">Export recipe</button><button id="import-recipe" class="small">Import recipe</button><input id="recipe-file" type="file" accept=".json,application/json" hidden></div></div><div class="run-block"><button id="process" class="primary wide" disabled>Process selected images</button><div class="run-actions"><button id="download-all" class="small" disabled>Download ZIP ↓</button><button id="cancel" class="small" hidden>Stop after current</button></div><p id="run-note">Results are new files. No images or settings are saved by this app after you leave.</p></div></section>
-</div>
-<details class="help"><summary>Good to know · formats, privacy & limits</summary><div class="help-content"><ul><li>This edition runs in your browser. Images are not sent to a server by the app. On an HTTP website the page itself is delivered without encryption; use trusted hosting and avoid sensitive images there.</li><li>PNG, JPEG, WebP and GIF are decoded by your browser. Animated GIF/WebP use the browser's default/first frame only. Animated PNG is rejected to avoid confusing the default image with frame zero. TIFF, PSD, PDF, HEIC, AVIF and other desktop formats are not included.</li><li>SVG is rasterized with a minimum longest edge of 2048 pixels. Larger SVG dimensions are retained within the working limits. SVG with scripts, animations, embedded images, external references or style sheets is rejected. Text uses available fonts; complex filters may render differently. SVGZ requires the optional built-in gzip decoder.</li><li>Work limits: 40 files, 32 MiB each, 200 MiB total input, 16 million pixels and 8192 pixels per edge. Background padding must fit these limits. Results have a 100 MiB total budget. Limits protect browser memory, not guarantee performance.</li><li>Compression tries PNG re-encoding, then reduced RGB precision and smaller dimensions until the file is strictly below 5 MiB. Color and size may change. Later actions can increase the size again.</li><li>New files omit source EXIF, GPS and text metadata; the browser may add resolution or color information. Copyright-only retention is not available. Color profiles, HDR and print fidelity are not guaranteed.</li><li>The app uses distinct download names within this session. Your browser controls destination folders and collisions with existing files. A ZIP download is available to save a batch in one click.</li><li>Recipes contain only action settings. Export/import them to reuse settings elsewhere. Images and results are kept for this page session only; reload clears them. Stop finishes the current file before stopping.</li></ul></div></details>
-</main>
-<footer class="footnote"><span>Image Studio <span aria-hidden="true">/</span> A companion to Console Image Tool</span><span>Local processing. Fresh files. Originals preserved.</span></footer>
+<main id="terminal" class="terminal">
+<header><div class="titlebar"><span>Console Image Tool</span><span>Web edition · browser engine</span></div><h1>CONSOLE IMAGE TOOL</h1><p>Compress / Background / Convert / Invert</p><p class="dim">Drop images here. Originals stay safe.</p><p class="dim">↑ ↓: choose · Enter: run · Esc: back</p></header>
+<ul id="received" class="file-list" aria-label="Loaded images"></ul>
+<h2 id="menu-title">Drop image files onto this page, or press Enter to choose files:</h2>
+<p id="screen-note" class="dim line"></p>
+<pre id="chain-log" hidden></pre>
+<div id="menu" class="menu" role="menu" aria-labelledby="menu-title"></div>
+<form id="prompt-form" hidden><label id="prompt-label" for="prompt-input"></label><div class="input-line"><span aria-hidden="true">&gt;</span><input id="prompt-input" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="status"></div><div class="prompt-buttons"><button class="plain" type="submit">[Enter] Continue</button><button class="plain" id="prompt-back" type="button">[Esc] Cancel</button></div></form>
+<p id="key-hint" class="hint"></p>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+<progress id="progress" value="0" max="1" aria-label="Processing progress" hidden></progress>
+<section id="results" class="results" aria-label="Processing results" hidden></section>
+<section id="preview" class="preview" aria-label="Image preview" hidden data-native-keyboard><header><span id="preview-name"></span><button class="plain" id="close-preview">[×] Close preview</button></header><div class="preview-images"><figure><figcaption>Original</figcaption><img id="preview-original" alt=""></figure><figure id="result-figure"><figcaption>Result</figcaption><img id="preview-result" alt=""></figure></div></section>
+<footer class="support" data-native-keyboard><div class="links"><button id="choose-native" class="plain">Choose images</button><button id="sample-native" class="plain">Load sample</button><button id="export-recipe" class="plain">Export recipe</button><button id="import-recipe" class="plain">Import recipe</button></div><p>Files stay on this device. Downloads use your browser’s save location.</p><details id="help"><summary>Browser differences, formats & limits</summary><ul><li>This is a browser mirror of the console workflow. It cannot run the Windows ImageMagick engine. Inputs: PNG, JPEG, WebP, GIF and a restricted static SVG subset. Outputs: PNG, JPEG, WebP (when supported) and ICO. GIF/WebP animation uses the default/first frame; APNG is rejected. No TIFF, PSD, HEIC, AVIF, PDF, layers or animation editing.</li><li>SVG renders at a minimum longest edge of 2048, preserving aspect and larger dimensions. Raster inputs are not enlarged automatically. Scripts, animations, embedded images, external references and style sheets in SVG are rejected. Fonts and filters may differ. SVGZ needs the browser’s built-in gzip decoder.</li><li>Backgrounds trim transparent edges only; opaque backgrounds stay intact. Padding is 0..4096 whole pixels per side. Compression produces PNG strictly below 5 MiB, with possible color/size loss. Put compression last in a chain.</li><li>Source metadata is not copied. The browser may add color or resolution information. Copyright-only retention is unavailable. Output [O] controls automatic/manual downloads, not filesystem folders. The browser controls existing-file collisions. Export/import recipes to keep settings; images and settings are not persisted after reload.</li><li>Limits: 40 files, 32 MiB each, 200 MiB total input; 8192 pixels per edge, 16 million pixels per canvas, 100 MiB total output; SVG up to 8 MiB/10,000 elements; recipes up to 16 KiB. Limits bound common memory use, not guarantee performance.</li><li>The app makes no upload, analytics or external dependency requests. HTTP delivery is unencrypted; use trusted hosting and avoid sensitive images there. Valid HTTPS and actual Vivacom deployment remain unverified.</li><li>Press a letter shortcut to activate immediately, or use ↑/↓ and Enter. Menus wrap. Home/End select first/last. In an action chain, Enter activates the highlighted row; after adding a step the Run row is selected. Backspace undoes the last step. Esc cancels a prompt/menu; during processing it stops after the current file. On the drop screen Esc pauses the session instead of closing a browser tab.</li></ul></details></footer>
+<input id="file-input" type="file" multiple accept=".png,.jpg,.jpeg,.webp,.gif,.svg,.svgz,.svg.gz" hidden>
+<input id="recipe-file" type="file" accept=".json,application/json" hidden>
 <script>
 'use strict';
 (() => {
 const $ = id => document.getElementById(id);
 const LIMIT = {files:40,file:32*1024*1024,total:200*1024*1024,pixels:16000000,edge:8192,results:100*1024*1024,svg:8*1024*1024,png:5*1024*1024};
-const state = {items:[],active:null,view:'original',chain:[],last:null,busy:false,processing:false,stop:false,serial:0,names:new Set(),run:0};
+const state = {items:[],chain:[],last:null,busy:false,processing:false,stop:false,serial:0,names:new Set()};
 const mime = {png:'image/png',jpeg:'image/jpeg',webp:'image/webp',ico:'image/x-icon'};
 const pause = () => new Promise(resolve => setTimeout(resolve,0));
 const size = n => n < 1024 ? n+' B' : n < 1048576 ? (n/1024).toFixed(1)+' KiB' : (n/1048576).toFixed(2)+' MiB';
-function status(message,error=false){$('status').textContent=message;$('status').dataset.tone=error?'error':'normal';}
 function dims(w,h){if(!Number.isFinite(w)||!Number.isFinite(h)||w<1||h<1||w>LIMIT.edge||h>LIMIT.edge||w*h>LIMIT.pixels)throw Error('Image exceeds the 8192-pixel edge or 16-million-pixel working limit, or has invalid dimensions.');}
 function canvas(w,h){w=Math.round(w);h=Math.round(h);dims(w,h);const c=document.createElement('canvas');c.width=w;c.height=h;if(!c.getContext('2d'))throw Error('Canvas processing is unavailable.');return c;}
 function ctx(c){return c.getContext('2d',{willReadFrequently:true});}
@@ -96,42 +100,516 @@ async function encode(c,format,quality){
  return blob(c,mime[format],quality);
 }
 function validateStep(raw){if(!raw||typeof raw!=='object'||!['background','invert','compress','convert'].includes(raw.type))throw Error('Invalid action in recipe.');const s={type:raw.type};if(s.type==='background'){if(typeof raw.color!=='string'||!/^#?(?:[\da-f]{3}|[\da-f]{6})$/i.test(raw.color))throw Error('Use a 3- or 6-digit hex color, with one optional #.');s.color='#'+raw.color.replace(/^#/,'').toLowerCase();if(!Number.isInteger(raw.padding)||raw.padding<0||raw.padding>4096)throw Error('Padding must be a whole number from 0 to 4096 per side.');s.padding=raw.padding;}if(s.type==='convert'){if(!Object.hasOwn(mime,raw.format))throw Error('Unsupported output format.');if(typeof raw.quality!=='number'||!Number.isFinite(raw.quality)||raw.quality<.1||raw.quality>1)throw Error('Quality must be between 10% and 100%.');s.format=raw.format;s.quality=raw.quality;}return s;}
-function currentStep(){return validateStep({type:$('action').value,color:$('color').value.trim(),padding:$('padding').value.trim()===''?NaN:Number($('padding').value),format:$('format').value,quality:Number($('quality').value)/100});}
-function recipe(){return (state.chain.length?state.chain:[currentStep()]).map(validateStep);}
-function stepText(s){return s.type==='background'?'Background '+s.color+' · '+s.padding+' px/side':s.type==='invert'?'Invert RGB · keep alpha':s.type==='compress'?'PNG strictly below 5 MiB':'Convert to '+s.format.toUpperCase()+(['jpeg','webp'].includes(s.format)?' · '+Math.round(s.quality*100)+'%':'');}
-function renderChain(){const ol=$('chain');ol.replaceChildren();state.chain.forEach((s,i)=>{const li=document.createElement('li'),label=document.createElement('span');label.className='label';label.textContent=stepText(s);li.append(label);for(const [text,title,fn,disabled] of [['↑','Move step '+(i+1)+' up',()=>{[state.chain[i-1],state.chain[i]]=[state.chain[i],state.chain[i-1]];renderChain();},i===0],['×','Remove step '+(i+1),()=>{state.chain.splice(i,1);renderChain();},false]]){const b=document.createElement('button');b.textContent=text;b.title=title;b.setAttribute('aria-label',title);b.disabled=disabled||state.busy;b.onclick=fn;li.append(b);}ol.append(li);});$('step-count').textContent=state.chain.length+'/8';$('chain-empty').hidden=!!state.chain.length;$('chain-hint').hidden=!state.chain.length;$('clear-chain').disabled=!state.chain.length||state.busy;$('add-step').disabled=state.chain.length>=8||state.busy;}
-function updateControls(){const selected=state.items.filter(i=>i.selected&&!i.error);$('process').disabled=state.busy||!selected.length;$('process').textContent=state.busy?'Processing…':'Process '+selected.length+' selected image'+(selected.length===1?'':'s');$('clear').disabled=state.busy||!state.items.length;$('demo').disabled=state.busy;$('drop').disabled=state.busy;$('browse').disabled=state.busy;$('select-all').disabled=state.busy||!state.items.length;$('select-all').checked=!!state.items.length&&state.items.every(i=>i.selected);$('select-all').indeterminate=state.items.some(i=>i.selected)&&!state.items.every(i=>i.selected);$('download-all').disabled=state.busy||!state.items.some(i=>i.output);$('repeat').disabled=state.busy||!state.last;for(const id of ['action','color','padding','white','black','format','quality','export-recipe','import-recipe'])$(id).disabled=state.busy;$('cancel').hidden=!state.processing;$('cancel').disabled=state.stop;$('count').textContent=state.items.length+' file'+(state.items.length===1?'':'s');$('empty-files').hidden=!!state.items.length;renderChain();updatePreview();}
-function updatePreview(){const i=state.items.find(x=>x.id===state.active);const result=!!(i&&i.output&&state.view==='result');$('view-original').setAttribute('aria-pressed',String(!result));$('view-result').setAttribute('aria-pressed',String(result));$('view-result').disabled=!i||!i.output;$('download-one').disabled=state.busy||!i||!i.output;if(!i||!i.preview){$('preview').hidden=true;$('preview').removeAttribute('src');$('placeholder').hidden=false;$('preview-info').textContent=i?i.error:'Nothing selected yet';return;}$('placeholder').hidden=true;$('preview').hidden=false;$('preview').src=result?i.outputPreview:i.preview;$('preview').alt=(result?'Processed result: ':'Original: ')+i.name;$('preview-info').textContent=result?i.outputWidth+' × '+i.outputHeight+' · '+size(i.output.size)+' · '+i.outputName:i.width+' × '+i.height+' · '+size(i.file.size)+' · '+i.name;}
-function removeItem(i){for(const key of ['preview','outputPreview'])if(i[key])URL.revokeObjectURL(i[key]);state.items=state.items.filter(x=>x!==i);if(state.active===i.id)state.active=state.items[0]?.id??null;renderFiles();renderResults();}
-function renderFiles(){const container=$('files');container.replaceChildren();for(const i of state.items){const row=document.createElement('div');row.className='file'+(state.active===i.id?' active':'')+(i.error?' error':'');const check=document.createElement('input');check.type='checkbox';check.className='file-check';check.checked=i.selected;check.disabled=state.busy;check.setAttribute('aria-label','Select '+i.name);check.onchange=()=>{i.selected=check.checked;updateControls();};const open=document.createElement('button');open.className='file-open';if(i.preview){const img=document.createElement('img');img.className='thumb';img.src=i.preview;img.alt='';open.append(img);}const copy=document.createElement('span');copy.className='file-copy';const name=document.createElement('span');name.className='file-name';name.textContent=i.name;const detail=document.createElement('span');detail.className='file-detail';detail.textContent=i.error||i.runError||(i.output?'✓ '+size(i.output.size)+' result':i.width+' × '+i.height+' · '+size(i.file.size));copy.append(name,detail);open.append(copy);open.title=i.error||i.name;open.onclick=()=>{state.active=i.id;state.view=i.output?'result':'original';renderFiles();};const remove=document.createElement('button');remove.className='remove';remove.textContent='×';remove.title='Remove '+i.name;remove.setAttribute('aria-label',remove.title);remove.disabled=state.busy;remove.onclick=()=>removeItem(i);row.append(check,open,remove);container.append(row);}updateControls();}
-function renderResults(){const box=$('results');box.replaceChildren();const results=state.items.filter(i=>i.output||i.runError);$('results-details').hidden=!results.length;$('results-title').textContent='Batch results · '+results.filter(i=>i.output).length+' ready'+(results.some(i=>i.runError)?' · errors need attention':'');for(const i of results){const row=document.createElement('div');row.className='result-row'+(i.runError?' error':'');const name=document.createElement('span');name.textContent=i.outputName||i.name;const info=document.createElement('small');info.textContent=i.runError||(i.outputWidth+' × '+i.outputHeight+' · '+size(i.output.size)+(i.lossy?' · color/size reduced':'')+' · '+i.recipe.map(stepText).join(' → '));name.append(info);row.append(name);if(i.output){const b=document.createElement('button');b.className='small';b.textContent='Download';b.disabled=state.busy;b.onclick=()=>download(i.output,i.outputName);row.append(b);}box.append(row);}}
-async function addFiles(files){if(state.busy)return;state.busy=true;renderFiles();let added=0,failed=0;const rejected=[];let used=state.items.reduce((n,i)=>n+i.file.size,0);try{for(const file of files){if(!file.size){rejected.push(file.name+': empty file');continue;}if(state.items.length>=LIMIT.files){rejected.push('40-file limit reached');break;}if(file.size>LIMIT.file||used+file.size>LIMIT.total){rejected.push(file.name+': input size limit exceeded');continue;}used+=file.size;const i={id:++state.serial,name:file.name,file,selected:true,preview:null,output:null,error:null};status('Reading '+file.name+'…');let c;try{c=await decode(file);i.width=c.width;i.height=c.height;i.preview=await previewURL(c);added++;}catch(e){i.error=e.message;i.selected=false;failed++;}finally{release(c);}state.items.push(i);if(state.active===null&&!i.error)state.active=i.id;renderFiles();await pause();}}finally{state.busy=false;renderFiles();status(added+' image'+(added===1?'':'s')+' added.'+(failed?' '+failed+' unsupported or unreadable; see the file list.':'')+(rejected.length?' '+rejected.join('; '):''),!!(failed||rejected.length));}}
 function uniqueName(name,format){let base=name.replace(/\.(?:svg\.gz|[^.]+)$/i,'').replace(/[<>:"/\\|?*\x00-\x1f]/g,'_').replace(/[. ]+$/,'').slice(0,100)||'image';if(/^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(base))base='_'+base;const ext=format==='jpeg'?'jpg':format;let candidate=base+'_edited.'+ext,n=2;while(state.names.has(candidate.toLowerCase()))candidate=base+'_edited_'+n+++'.'+ext;state.names.add(candidate.toLowerCase());return candidate;}
-async function process(){if(state.busy)return;let steps;try{steps=recipe();}catch(e){status(e.message,true);return;}const selected=state.items.filter(i=>i.selected&&!i.error);if(!selected.length)return;state.last=steps.map(s=>({...s}));state.busy=true;state.processing=true;state.stop=false;state.run++;$('progress').hidden=false;$('progress').max=selected.length;$('progress').value=0;renderFiles();renderResults();let success=0,errors=0;try{for(const i of selected){if(state.stop)break;status('Processing '+i.name+' · '+(success+errors+1)+' of '+selected.length+'…');let c;for(const k of ['outputPreview'])if(i[k])URL.revokeObjectURL(i[k]);i.output=null;i.outputPreview=null;i.runError=null;i.outputName=null;try{c=await decode(i.file);let format='png',quality=.92,encoded=null,lossy=false;for(const step of steps){await pause();if(step.type==='background'){const next=addBackground(c,step.color,step.padding);release(c);c=next;format='png';encoded=null;}else if(step.type==='invert'){invert(c);encoded=null;}else if(step.type==='compress'){const result=await compress(c);c=result.c;encoded=result.blob;lossy=lossy||result.changed;format='png';}else if(step.type==='convert'){format=step.format;quality=step.quality;encoded=await encode(c,format,quality);if(format==='ico'){const next=fit(c,256);release(c);c=next;}else{const next=await decode(new File([encoded],'step.'+(format==='jpeg'?'jpg':format)));release(c);c=next;}}}encoded=encoded||await encode(c,format,quality);const total=state.items.reduce((n,x)=>n+(x.output?.size||0),0);if(total+encoded.size>LIMIT.results)throw Error('Results exceed the 100 MiB budget. Download and remove finished files, then retry.');i.outputPreview=await previewURL(c);i.output=encoded;i.outputName=uniqueName(i.name,format);i.outputWidth=c.width;i.outputHeight=c.height;i.recipe=steps.map(s=>({...s}));i.lossy=lossy;success++;state.active=i.id;state.view='result';}catch(e){i.runError=e.message;errors++;}finally{release(c);}$('progress').value=success+errors;renderFiles();renderResults();await pause();}}finally{state.busy=false;state.processing=false;$('progress').hidden=true;renderFiles();renderResults();$('results-details').open=true;status((state.stop?'Stopped. ':'')+success+' result'+(success===1?'':'s')+' ready'+(errors?' · '+errors+' failed; see batch results.':'.')+' Downloads use the recipe shown with each result.',!!errors);}}
 function download(data,name){const url=URL.createObjectURL(data),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);}
 const crcTable=Uint32Array.from({length:256},(_,i)=>{let c=i;for(let k=0;k<8;k++)c=c&1?0xedb88320^(c>>>1):c>>>1;return c>>>0;});
 function crc32(bytes){let c=0xffffffff;for(const b of bytes)c=crcTable[(c^b)&255]^(c>>>8);return (c^0xffffffff)>>>0;}
 async function zip(items){const locals=[],central=[];let offset=0,centralSize=0;const encoder=new TextEncoder();for(const i of items){const data=new Uint8Array(await i.output.arrayBuffer()),name=encoder.encode(i.outputName),crc=crc32(data),h=new Uint8Array(30),v=new DataView(h.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x0800,true);v.setUint16(12,33,true);v.setUint32(14,crc,true);v.setUint32(18,data.length,true);v.setUint32(22,data.length,true);v.setUint16(26,name.length,true);locals.push(h,name,data);const ch=new Uint8Array(46),cv=new DataView(ch.buffer);cv.setUint32(0,0x02014b50,true);cv.setUint16(4,20,true);cv.setUint16(6,20,true);cv.setUint16(8,0x0800,true);cv.setUint16(14,33,true);cv.setUint32(16,crc,true);cv.setUint32(20,data.length,true);cv.setUint32(24,data.length,true);cv.setUint16(28,name.length,true);cv.setUint32(42,offset,true);central.push(ch,name);centralSize+=ch.length+name.length;offset+=h.length+name.length+data.length;await pause();}const end=new Uint8Array(22),ev=new DataView(end.buffer);ev.setUint32(0,0x06054b50,true);ev.setUint16(8,items.length,true);ev.setUint16(10,items.length,true);ev.setUint32(12,centralSize,true);ev.setUint32(16,offset,true);return new Blob([...locals,...central,end],{type:'application/zip'});}
-function updateFields(){$('background-fields').hidden=$('action').value!=='background';$('convert-fields').hidden=$('action').value!=='convert';const t=$('action').value;$('action-hint').hidden=!['invert','compress'].includes(t);$('action-hint').textContent=t==='invert'?'Invert red, green and blue while keeping each pixel’s transparency.':'Outputs PNG strictly below 5 MiB. May reduce RGB precision and dimensions; place last in a chain.';$('quality-field').hidden=!['jpeg','webp'].includes($('format').value);$('quality-value').textContent=$('quality').value+'%';}
-$('action').onchange=updateFields;$('format').onchange=updateFields;$('quality').oninput=updateFields;
-$('white').onclick=()=>{$('color').value='#ffffff';$('padding').value='20';};$('black').onclick=()=>{$('color').value='#000000';$('padding').value='20';};
-for(const id of ['drop','browse'])$(id).onclick=()=>$('file-input').click();
-$('file-input').onchange=()=>{const files=[...$('file-input').files];$('file-input').value='';void addFiles(files);};
-let dragDepth=0;document.addEventListener('dragover',e=>{e.preventDefault();});document.addEventListener('drop',e=>{e.preventDefault();dragDepth=0;$('drop').classList.remove('drag');if(e.dataTransfer?.files.length)void addFiles([...e.dataTransfer.files]);});$('drop').addEventListener('dragenter',e=>{e.preventDefault();dragDepth++;$('drop').classList.add('drag');});$('drop').addEventListener('dragleave',()=>{if(--dragDepth<=0)$('drop').classList.remove('drag');});
-$('select-all').onchange=()=>{for(const i of state.items)i.selected=$('select-all').checked;renderFiles();};
-$('clear').onclick=()=>{if(state.busy)return;for(const i of [...state.items])removeItem(i);status('Images and results cleared. The action chain is kept.');};
-$('add-step').onclick=()=>{try{if(state.chain.length>=8)throw Error('An action chain can contain up to 8 steps.');state.chain.push(currentStep());renderChain();}catch(e){status(e.message,true);}};
-$('clear-chain').onclick=()=>{state.chain=[];renderChain();};$('repeat').onclick=()=>{state.chain=state.last.map(s=>({...s}));renderChain();status('Last processed recipe restored. Process it on your selected originals.');};
-$('view-original').onclick=()=>{state.view='original';updatePreview();};$('view-result').onclick=()=>{state.view='result';updatePreview();};
-$('process').onclick=()=>void process();$('cancel').onclick=()=>{state.stop=true;$('cancel').disabled=true;status('Stopping after the current image…');};
-$('download-one').onclick=()=>{const i=state.items.find(x=>x.id===state.active);if(i?.output)download(i.output,i.outputName);};
-$('download-all').onclick=async()=>{if(state.busy)return;state.busy=true;renderFiles();renderResults();status('Packing results into a ZIP…');try{download(await zip(state.items.filter(i=>i.output)),'Image-Studio-results.zip');status('ZIP ready. Your browser will save the download.');}catch(e){status('ZIP failed: '+e.message,true);}finally{state.busy=false;renderFiles();renderResults();}};
-$('export-recipe').onclick=()=>{try{download(new Blob([JSON.stringify({app:'image-studio',version:1,steps:recipe()},null,2)],{type:'application/json'}),'Image-Studio-recipe.json');}catch(e){status(e.message,true);}};
-$('import-recipe').onclick=()=>$('recipe-file').click();$('recipe-file').onchange=async()=>{const f=$('recipe-file').files[0];$('recipe-file').value='';if(!f||state.busy)return;try{if(f.size>16384)throw Error('Recipe exceeds 16 KiB.');const data=JSON.parse(await f.text());if(data.app!=='image-studio'||data.version!==1||!Array.isArray(data.steps)||!data.steps.length||data.steps.length>8)throw Error('Choose an Image Studio version 1 recipe with 1–8 steps.');const steps=data.steps.map(validateStep);if(state.busy)throw Error('Wait until processing finishes, then import again.');state.chain=steps;renderChain();status('Recipe imported. Review the chain, then process your selected images.');}catch(e){status('Recipe not imported: '+e.message,true);}};
-$('demo').onclick=async()=>{const c=canvas(420,280),g=ctx(c);g.fillStyle='#216749';g.beginPath();g.roundRect(70,65,280,150,35);g.fill();g.strokeStyle='#d1e3a9';g.lineWidth=8;g.beginPath();g.arc(141,140,30,0,Math.PI*2);g.stroke();g.fillStyle='#fff';g.font='bold 36px Segoe UI, sans-serif';g.fillText('studio',190,153);const b=await blob(c);release(c);await addFiles([new File([b],'studio-sample.png',{type:'image/png'})]);};
-async function init(){for(const format of ['jpeg','webp']){const c=canvas(1,1);try{await blob(c,mime[format]);}catch(e){const option=$('format').querySelector('option[value="'+format+'"]');option.disabled=true;option.textContent+=' · unavailable in this browser';}finally{release(c);}}updateFields();renderFiles();}
+// Menu-driven browser shell. Image processing stays in the engine above.
+function status(message, error = false) {
+  $('status').textContent = message;
+  $('status').dataset.tone = error ? 'error' : 'normal';
+}
+
+const ui = {
+  screen: 'drop', index: 0, rows: [], output: 'auto',
+  pendingColor: null, chainReturn: false, latest: [],
+  encoders: new Set(['png', 'ico']), reading: false
+};
+const selected = () => state.items.filter(i => i.selected && !i.error);
+const row = (key, label, run, disabled = false) => ({ key, label, run, disabled });
+const stepsLabel = steps => steps.map(stepText).join(' -> ');
+
+function stepText(s) {
+  if (s.type === 'compress') return 'Compress below 5 MiB';
+  if (s.type === 'invert') return 'Invert colors';
+  if (s.type === 'convert') return 'Convert to ' + s.format.toUpperCase();
+  if (s.color === '#ffffff' && s.padding === 20) return 'White background + 20 px';
+  if (s.color === '#000000' && s.padding === 20) return 'Black background + 20 px';
+  return 'Bg ' + s.color + ' + ' + s.padding + ' px';
+}
+
+function actionRows(inChain = false) {
+  const choose = step => {
+    if (inChain) addStep(step);
+    else void process([step]);
+  };
+  return [
+    row('C', 'Compress to PNG below 5 MiB', () => choose({ type: 'compress' })),
+    row('W', 'White background + 20 px', () => choose({ type: 'background', color: '#ffffff', padding: 20 })),
+    row('B', 'Black background + 20 px', () => choose({ type: 'background', color: '#000000', padding: 20 })),
+    row('H', 'Custom background + padding...', () => { ui.chainReturn = inChain; go('hex'); }),
+    row('I', 'Invert colors', () => choose({ type: 'invert' })),
+    row('F', 'Convert format...', () => { ui.chainReturn = inChain; go('formats'); })
+  ].map(r => ({ ...r, disabled: inChain && state.chain.length >= 8 }));
+}
+
+function go(screen) {
+  if (state.busy) return;
+  ui.screen = screen;
+  ui.index = 0;
+  status('');
+  render();
+}
+
+function activate(index) {
+  const r = ui.rows[index];
+  if (!r || state.busy) return;
+  ui.index = index;
+  if (r.disabled) { status(ui.screen === 'chain' && state.chain.length >= 8 ? 'Maximum chain length reached (8 actions). Undo a step or run the chain.' : 'That option is not available yet.', true); return; }
+  try { r.run(); } catch (e) { status(e.message, true); }
+}
+
+function paintSelection(focus = true) {
+  const buttons = [...$('menu').children];
+  buttons.forEach((b, n) => {
+    b.classList.toggle('active', n === ui.index);
+    b.tabIndex = n === ui.index ? 0 : -1;
+    b.firstElementChild.textContent = n === ui.index ? '> ' : '  ';
+  });
+  if (focus && buttons[ui.index]) {
+    buttons[ui.index].focus({ preventScroll: true });
+    buttons[ui.index].scrollIntoView({ block: 'nearest' });
+  }
+}
+
+function renderReceived() {
+  const list = $('received');
+  list.replaceChildren();
+  list.hidden = !state.items.length;
+  for (const i of state.items) {
+    const li = document.createElement('li');
+    const label = i.error ? '[!] ' : i.selected ? '[x] ' : '[ ] ';
+    li.textContent = label + i.name + '  ' + (i.error || (i.width + 'x' + i.height + '  ' + size(i.file.size)));
+    if (i.error) li.className = 'error';
+    list.append(li);
+  }
+}
+
+function render(focus = true) {
+  renderReceived();
+  const screen = ui.screen;
+  let title = '', note = '', hint = 'Arrows: choose | Enter: run | Esc: back';
+  let rows = [];
+  $('prompt-form').hidden = !['hex', 'padding', 'quality'].includes(screen);
+  $('chain-log').hidden = screen !== 'chain';
+  if (screen === 'drop') {
+    title = 'Drop image files onto this page, or press Enter to choose files:';
+    rows = [row('Enter', 'Choose image files...', chooseFiles), row('D', 'Load a sample image', () => void sample())];
+    if (state.items.length) rows.push(row('L', 'Use loaded images (' + selected().length + ' selected)', () => go(selected().length ? 'actions' : 'files')));
+    if (state.items.length) rows.push(row('S', 'Select / remove loaded images...', () => go('files')));
+    if (state.items.some(i => i.output)) rows.push(row('V', 'Show previous results', () => go('results')));
+    hint = 'Enter: choose files | Drop: load images | Esc: pause';
+  } else if (screen === 'idle') {
+    title = 'Session paused.';
+    note = 'Your loaded images are still in memory. Close this tab to leave.';
+    rows = [row('Enter', 'Resume', () => go('drop'))];
+  } else if (screen === 'actions') {
+    title = 'Choose once for ' + selected().length + ' image' + (selected().length === 1 ? '' : 's') + ':';
+    if (state.last) rows.push(row('R', 'Repeat last: ' + stepsLabel(state.last), () => void process(state.last)));
+    rows.push(...actionRows(), row('A', 'Build action chain...', () => { state.chain = []; go('chain'); }),
+      row('O', 'Output: ' + ({ auto: 'automatic browser download', zip: 'always download ZIP', manual: 'manual downloads' }[ui.output]), () => go('output')),
+      row('M', 'Metadata: remove source metadata', () => go('metadata')),
+      row('S', 'Select / remove loaded images...', () => go('files')));
+  } else if (screen === 'formats') {
+    title = 'Convert to:';
+    note = 'Browser-supported encoders only. JPEG flattens transparency onto white.';
+    const formats = [['P', 'PNG', 'png'], ['J', 'JPEG', 'jpeg'], ['W', 'WebP', 'webp'], ['C', 'ICO (Windows icon, up to 256x256)', 'ico']];
+    rows = formats.filter(x => ui.encoders.has(x[2])).map(([key, label, format]) => row(key, label, () => {
+      ui.pendingFormat = format;
+      if (['jpeg', 'webp'].includes(format)) go('quality');
+      else finishStep({ type: 'convert', format, quality: .92 });
+    }));
+  } else if (screen === 'chain') {
+    title = 'BUILD ACTION CHAIN';
+    note = 'Press action letters in order, or choose a row with the arrows.\nPut Compress last if the final file must remain below 5 MiB.';
+    $('chain-log').textContent = 'Chain (' + state.chain.length + '/8): ' + (state.chain.length ? stepsLabel(state.chain) : '(empty)');
+    rows = [row('Enter', 'Run action chain', () => void process(state.chain), !state.chain.length), ...actionRows(true), row('Backspace', 'Undo last action', undoStep, !state.chain.length)];
+    hint = 'Arrows: choose | Enter: activate | Backspace: undo | Esc: cancel';
+  } else if (screen === 'output') {
+    title = 'Output:';
+    note = 'Browsers cannot save beside originals or choose an arbitrary folder here.\nYour browser controls the save location and existing-file collisions.';
+    rows = [row('A', 'Automatic: one result as a file, a batch as ZIP', () => setOutput('auto')),
+      row('Z', 'Always download a ZIP', () => setOutput('zip')),
+      row('D', 'Manual: show download links after processing', () => setOutput('manual'))];
+  } else if (screen === 'metadata') {
+    title = 'Metadata: remove source metadata';
+    note = 'Source EXIF, GPS and text fields are not copied into new files.\nThe browser may add resolution/color information.\nCopyright-only retention is not supported by this browser edition.';
+    rows = [row('Enter', 'Back to actions', () => go('actions'))];
+  } else if (screen === 'files') {
+    title = 'SELECT IMAGES';
+    note = 'Space/Enter: toggle selected image. Delete: remove highlighted image.';
+    rows = state.items.map(i => row('', (i.selected ? '[x] ' : '[ ] ') + i.name + (i.error ? ' — unreadable' : ''), () => {
+      if (i.error) { status('This file is unreadable. Delete it or choose a supported image.', true); return; }
+      i.selected = !i.selected;
+      render();
+    }));
+    rows.push(row('A', 'Select all readable images', () => { state.items.forEach(i => i.selected = !i.error); render(); }),
+      row('N', 'Choose more image files...', chooseFiles),
+      row('C', 'Clear loaded images and results', clearImages),
+      row('G', 'Continue with selected images', () => go('actions'), !selected().length));
+    hint = 'Arrows: choose | Space: toggle | Delete: remove | G: continue | Esc: back';
+  } else if (screen === 'results') {
+    title = 'RESULTS';
+    note = 'Originals remain unchanged. Downloads are new files.';
+    rows = [row('Enter', 'Choose more image files...', chooseFiles),
+      row('R', 'Repeat last on the current selection', () => void process(state.last), !state.last || !selected().length),
+      row('A', 'Choose another action for the same originals', () => go('actions'), !selected().length),
+      row('Z', 'Download ready results as ZIP', () => void downloadZip(), !state.items.some(i => i.output)),
+      row('S', 'Select / remove loaded images...', () => go('files'))];
+  } else if (screen === 'busy') {
+    title = ui.reading ? 'READING IMAGES' : state.processing ? 'PROCESSING' : 'PREPARING DOWNLOAD';
+    note = state.processing ? 'Esc: stop after the current image.' : 'Please wait...';
+    rows = state.processing ? [row('Esc', state.stop ? 'Stopping after current image...' : 'Stop after current image', stopProcessing, state.stop)] : [];
+    hint = '';
+  } else if (screen === 'hex') {
+    title = 'CUSTOM BACKGROUND';
+    showPrompt('Background hex (e.g. #8FA796 or 8FA796); Esc cancels:', '', 'text');
+  } else if (screen === 'padding') {
+    title = 'CUSTOM BACKGROUND';
+    note = 'Background: ' + ui.pendingColor;
+    showPrompt('Padding per side in pixels (Enter = 20, 0 = none):', '', 'numeric');
+  } else if (screen === 'quality') {
+    title = 'CONVERT TO ' + ui.pendingFormat.toUpperCase();
+    showPrompt('Quality 10..100 (Enter = 92); Esc cancels:', '', 'numeric');
+  }
+  $('menu-title').textContent = title;
+  $('screen-note').textContent = note;
+  $('screen-note').hidden = !note;
+  $('key-hint').textContent = hint;
+  $('key-hint').hidden = !hint;
+  $('results').hidden = screen !== 'results';
+  ui.rows = rows;
+  ui.index = Math.max(0, Math.min(ui.index, rows.length - 1));
+  $('menu').replaceChildren();
+  rows.forEach((r, index) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'menu-row'; b.setAttribute('role', 'menuitem');
+    b.setAttribute('aria-disabled', String(r.disabled));
+    const arrow = document.createElement('span'); arrow.className = 'arrow'; arrow.setAttribute('aria-hidden', 'true');
+    const label = document.createElement('span'); label.textContent = (r.key ? '[' + r.key + '] ' : '') + r.label;
+    b.append(arrow, label);
+    b.onclick = () => activate(index);
+    b.onfocus = () => { ui.index = index; paintSelection(false); };
+    $('menu').append(b);
+  });
+  for (const id of ['choose-native', 'sample-native', 'export-recipe', 'import-recipe']) $(id).disabled = state.busy;
+  $('export-recipe').disabled = state.busy || !(state.chain.length || state.last);
+  if (screen === 'results') renderResults();
+  if (!$('prompt-form').hidden && focus) $('prompt-input').focus({ preventScroll: true });
+  else paintSelection(focus);
+}
+
+function showPrompt(label, value, inputMode) {
+  $('prompt-label').textContent = label;
+  $('prompt-input').value = value;
+  $('prompt-input').inputMode = inputMode;
+}
+
+function submitPrompt() {
+  const value = $('prompt-input').value.trim();
+  try {
+    if (ui.screen === 'hex') {
+      const step = validateStep({ type: 'background', color: value, padding: 20 });
+      ui.pendingColor = step.color;
+      go('padding');
+    } else if (ui.screen === 'padding') {
+      if (value && !/^\d+$/.test(value)) throw Error('Enter a whole number from 0 to 4096.');
+      finishStep(validateStep({ type: 'background', color: ui.pendingColor, padding: value ? Number(value) : 20 }));
+    } else if (ui.screen === 'quality') {
+      if (value && !/^\d+$/.test(value)) throw Error('Enter a whole number from 10 to 100.');
+      finishStep(validateStep({ type: 'convert', format: ui.pendingFormat, quality: (value ? Number(value) : 92) / 100 }));
+    }
+  } catch (e) { status(e.message, true); }
+}
+
+function finishStep(step) {
+  step = validateStep(step);
+  if (ui.chainReturn) addStep(step);
+  else void process([step]);
+}
+
+function addStep(step) {
+  if (state.chain.length >= 8) { status('Maximum chain length reached (8 actions).', true); return; }
+  state.chain.push(validateStep(step));
+  go('chain');
+}
+
+function undoStep() {
+  state.chain.pop();
+  ui.index = 0;
+  render();
+}
+
+function setOutput(mode) { ui.output = mode; go('actions'); status('Output preference updated for this session.'); }
+function chooseFiles() { if (!state.busy) $('file-input').click(); }
+function stopProcessing() { if (!state.processing) return; state.stop = true; render(); status('Stopping after the current image...'); }
+
+function back() {
+  if (state.busy) { stopProcessing(); return; }
+  if (ui.screen === 'padding') { go('hex'); return; }
+  if (ui.screen === 'quality') { go('formats'); return; }
+  if (['hex', 'formats'].includes(ui.screen)) { go(ui.chainReturn ? 'chain' : 'actions'); return; }
+  if (['chain', 'output', 'metadata', 'files'].includes(ui.screen)) { go(selected().length ? 'actions' : 'drop'); return; }
+  go(ui.screen === 'drop' ? 'idle' : 'drop');
+}
+
+function discard(i) {
+  for (const key of ['preview', 'outputPreview']) if (i[key]) URL.revokeObjectURL(i[key]);
+  state.items = state.items.filter(x => x !== i);
+  ui.latest = ui.latest.filter(id => id !== i.id);
+}
+
+function clearImages() {
+  for (const i of [...state.items]) discard(i);
+  $('preview').hidden = true;
+  go('drop');
+  status('Loaded images and results cleared.');
+}
+
+async function addFiles(files) {
+  if (state.busy || !files.length) return;
+  // A new drop is a new batch, like the console input prompt.
+  state.items.forEach(i => i.selected = false);
+  state.busy = true; state.stop = false; ui.reading = true; ui.screen = 'busy';
+  $('preview').hidden = true; render();
+  let added = 0, failed = 0;
+  const rejected = [];
+  let used = state.items.reduce((n, i) => n + i.file.size, 0);
+  try {
+    for (const file of files) {
+      if (!file.size) { rejected.push(file.name + ': empty file'); continue; }
+      if (state.items.length >= LIMIT.files) { rejected.push('40-file limit reached; remove loaded files to make room.'); break; }
+      if (file.size > LIMIT.file || used + file.size > LIMIT.total) { rejected.push(file.name + ': input size limit exceeded'); continue; }
+      used += file.size;
+      const i = { id: ++state.serial, name: file.name, file, selected: true, preview: null, output: null, error: null };
+      status('Reading ' + file.name + '...');
+      let c;
+      try {
+        c = await decode(file);
+        i.width = c.width; i.height = c.height;
+        i.preview = await previewURL(c); added++;
+      } catch (e) { i.error = e.message; i.selected = false; failed++; }
+      finally { release(c); }
+      state.items.push(i);
+      renderReceived();
+      await pause();
+    }
+  } finally {
+    state.busy = false; ui.reading = false;
+    go(added ? 'actions' : 'drop');
+    status('Ready: ' + added + ' image' + (added === 1 ? '' : 's') + '.' + (failed ? ' ' + failed + ' unreadable; see the file list.' : '') + (rejected.length ? ' ' + rejected.join('; ') : ''), !!(failed || rejected.length));
+  }
+}
+
+async function process(rawSteps) {
+  if (state.busy) return;
+  let steps;
+  try {
+    if (!Array.isArray(rawSteps) || !rawSteps.length || rawSteps.length > 8) throw Error('Add 1 to 8 actions before running.');
+    steps = rawSteps.map(validateStep);
+  } catch (e) { status(e.message, true); return; }
+  const batch = selected();
+  if (!batch.length) { status('Choose at least one readable image first.', true); return; }
+  state.last = steps.map(s => ({ ...s }));
+  state.busy = true; state.processing = true; state.stop = false;
+  ui.screen = 'busy'; ui.latest = [];
+  $('preview').hidden = true;
+  $('progress').hidden = false; $('progress').max = batch.length; $('progress').value = 0;
+  render();
+  let success = 0, errors = 0;
+  try {
+    for (const i of batch) {
+      if (state.stop) break;
+      ui.latest.push(i.id);
+      const start = performance.now();
+      status('[' + (success + errors + 1) + '/' + batch.length + '] ' + stepsLabel(steps) + '\n' + i.name);
+      if (i.outputPreview) URL.revokeObjectURL(i.outputPreview);
+      i.output = null; i.outputPreview = null; i.outputName = null; i.runError = null;
+      let c;
+      try {
+        c = await decode(i.file);
+        let format = 'png', quality = .92, encoded = null, lossy = false;
+        for (const step of steps) {
+          await pause();
+          if (step.type === 'background') {
+            const next = addBackground(c, step.color, step.padding);
+            release(c); c = next; format = 'png'; encoded = null;
+          } else if (step.type === 'invert') {
+            invert(c); encoded = null;
+          } else if (step.type === 'compress') {
+            const result = await compress(c);
+            c = result.c; encoded = result.blob; lossy = lossy || result.changed; format = 'png';
+          } else if (step.type === 'convert') {
+            format = step.format; quality = step.quality;
+            encoded = await encode(c, format, quality);
+            const next = format === 'ico' ? fit(c, 256) : await decode(new File([encoded], 'step.' + (format === 'jpeg' ? 'jpg' : format)));
+            release(c); c = next;
+          }
+        }
+        encoded = encoded || await encode(c, format, quality);
+        const total = state.items.reduce((n, x) => n + (x.output?.size || 0), 0);
+        if (total + encoded.size > LIMIT.results) throw Error('Results exceed the 100 MiB budget. Download/remove finished files, then retry.');
+        i.outputPreview = await previewURL(c);
+        i.output = encoded; i.outputName = uniqueName(i.name, format);
+        i.outputWidth = c.width; i.outputHeight = c.height;
+        i.recipe = steps.map(s => ({ ...s })); i.lossy = lossy;
+        success++;
+      } catch (e) { i.runError = e.message; errors++; }
+      finally { release(c); i.seconds = (performance.now() - start) / 1000; }
+      $('progress').value = success + errors;
+      await pause();
+    }
+  } finally {
+    state.processing = false;
+    // Remain busy while preparing the one automatic download for this run.
+    const ready = batch.filter(i => ui.latest.includes(i.id) && i.output);
+    let delivery = '';
+    try {
+      if (ready.length && ui.output !== 'manual') {
+        if (ui.output === 'zip' || ready.length > 1) download(await zip(ready), 'Console-Image-Tool-results.zip');
+        else download(ready[0].output, ready[0].outputName);
+        delivery = '\nDownload requested. If it does not start, use the links below.';
+      }
+    } catch (e) { delivery = '\nAutomatic download failed: ' + e.message + ' Use the result links below.'; }
+    state.busy = false;
+    $('progress').hidden = true;
+    go('results');
+    status((state.stop ? 'Stopped. ' : '') + 'Completed: ' + success + ' succeeded, ' + errors + ' failed.' + delivery, !!errors);
+  }
+}
+
+function renderResults() {
+  const list = $('results'); list.replaceChildren();
+  for (const i of state.items.filter(i => i.output || i.runError)) {
+    const block = document.createElement('div'); block.className = 'result';
+    function line(text, className) { const p = document.createElement('p'); p.textContent = text; if (className) p.className = className; block.append(p); }
+    line(i.name, 'cyan');
+    line('Before: ' + i.width + 'x' + i.height + '  ' + size(i.file.size));
+    if (i.output) {
+      const change = Math.round((i.output.size - i.file.size) / i.file.size * 100);
+      line('After:  ' + i.outputWidth + 'x' + i.outputHeight + '  ' + size(i.output.size) + '  (' + (change > 0 ? '+' : '') + change + '%)', 'green');
+      line('Time:   ' + i.seconds.toFixed(2) + ' s', 'dim');
+      line('Output: ' + i.outputName);
+      line(stepsLabel(i.recipe) + (i.lossy ? ' [color/size reduced]' : ''), 'dim');
+      const actions = document.createElement('div'); actions.className = 'actions'; actions.dataset.nativeKeyboard = '';
+      for (const [label, fn] of [['[Download]', () => download(i.output, i.outputName)], ['[Preview]', () => showPreview(i)]]) {
+        const b = document.createElement('button'); b.className = 'plain'; b.textContent = label; b.onclick = fn; actions.append(b);
+      }
+      block.append(actions);
+    } else line('Failed: ' + i.runError, 'error');
+    list.append(block);
+  }
+}
+
+function showPreview(i) {
+  $('preview-name').textContent = i.name;
+  $('preview-original').src = i.preview; $('preview-original').alt = 'Original: ' + i.name;
+  $('preview-result').src = i.outputPreview; $('preview-result').alt = 'Result: ' + i.outputName;
+  $('preview').hidden = false;
+  $('preview').scrollIntoView({ block: 'nearest' });
+}
+
+async function downloadZip() {
+  if (state.busy) return;
+  const results = state.items.filter(i => i.output);
+  if (!results.length) return;
+  state.busy = true; ui.screen = 'busy'; render(); status('Packing ready results into a ZIP...');
+  let failure = null;
+  try { download(await zip(results), 'Console-Image-Tool-results.zip'); }
+  catch (e) { failure = e.message; }
+  finally { state.busy = false; go('results'); status(failure ? 'ZIP failed: ' + failure : 'ZIP download requested.', !!failure); }
+}
+
+async function sample() {
+  if (state.busy) return;
+  const c = canvas(240,100), g = ctx(c);
+  g.fillStyle = '#008080'; g.fillRect(15,15,210,70);
+  g.fillStyle = '#fff'; g.font = 'bold 24px monospace'; g.fillText('IMAGE TOOL',42,59);
+  try { await addFiles([new File([await blob(c)], 'sample.png', { type: 'image/png' })]); }
+  finally { release(c); }
+}
+
+function exportRecipe() {
+  try {
+    const steps = (ui.screen === 'chain' ? state.chain : state.last || state.chain).map(validateStep);
+    if (!steps.length) throw Error('Run an action or build a chain before exporting a recipe.');
+    download(new Blob([JSON.stringify({ app: 'image-studio', version: 1, steps }, null, 2)], { type: 'application/json' }), 'Console-Image-Tool-recipe.json');
+  } catch (e) { status(e.message, true); }
+}
+
+async function importRecipe(file) {
+  if (!file || state.busy) return;
+  try {
+    if (file.size > 16384) throw Error('Recipe exceeds 16 KiB.');
+    const data = JSON.parse(await file.text());
+    if (data.app !== 'image-studio' || data.version !== 1 || !Array.isArray(data.steps) || !data.steps.length || data.steps.length > 8) throw Error('Choose a version 1 recipe with 1–8 steps.');
+    const steps = data.steps.map(validateStep);
+    if (state.busy) throw Error('Wait for processing to finish, then import again.');
+    state.chain = steps; go('chain');
+    status('Recipe loaded. Review the chain, then press Enter to run.');
+  } catch (e) { status('Recipe not imported: ' + e.message, true); }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
+  if (e.target.closest('[data-native-keyboard]')) return;
+  if (e.target === $('prompt-input') || e.target.closest('#prompt-form')) {
+    if (e.key === 'Escape') { e.preventDefault(); back(); }
+    return;
+  }
+  if (e.key === 'Escape') { e.preventDefault(); back(); return; }
+  if (state.busy) return;
+  const count = ui.rows.length;
+  if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
+    if (!count) return;
+    e.preventDefault();
+    ui.index = e.key === 'Home' ? 0 : e.key === 'End' ? count - 1 : (ui.index + (e.key === 'ArrowDown' ? 1 : -1) + count) % count;
+    paintSelection(); return;
+  }
+  if (e.key === 'Backspace' && ui.screen === 'chain') { e.preventDefault(); undoStep(); return; }
+  if (e.key === 'Delete' && ui.screen === 'files' && ui.index < state.items.length) {
+    e.preventDefault(); discard(state.items[ui.index]); $('preview').hidden = true; render(); return;
+  }
+  if (e.key === 'Enter' || (e.key === ' ' && ui.screen === 'files')) { e.preventDefault(); activate(ui.index); return; }
+  if (e.key.length === 1) {
+    const index = ui.rows.findIndex(r => r.key === e.key.toUpperCase());
+    if (index !== -1) { e.preventDefault(); activate(index); }
+  }
+});
+
+$('prompt-form').onsubmit = e => { e.preventDefault(); submitPrompt(); };
+$('prompt-back').onclick = back;
+$('file-input').onchange = () => { const files = [...$('file-input').files]; $('file-input').value = ''; void addFiles(files); };
+$('choose-native').onclick = chooseFiles;
+$('sample-native').onclick = () => void sample();
+$('export-recipe').onclick = exportRecipe;
+$('import-recipe').onclick = () => $('recipe-file').click();
+$('recipe-file').onchange = () => { const file = $('recipe-file').files[0]; $('recipe-file').value = ''; void importRecipe(file); };
+$('close-preview').onclick = () => { $('preview').hidden = true; paintSelection(); };
+let dragDepth = 0;
+document.addEventListener('dragenter', e => { e.preventDefault(); dragDepth++; $('terminal').classList.add('drag'); });
+document.addEventListener('dragover', e => { e.preventDefault(); });
+document.addEventListener('dragleave', () => { if (--dragDepth <= 0) $('terminal').classList.remove('drag'); });
+document.addEventListener('drop', e => {
+  e.preventDefault(); dragDepth = 0; $('terminal').classList.remove('drag');
+  if (state.busy) { status('Wait for the current operation before dropping more images.', true); return; }
+  if (e.dataTransfer?.files.length) void addFiles([...e.dataTransfer.files]);
+});
+
+async function init() {
+  render();
+  for (const format of ['jpeg', 'webp']) {
+    const c = canvas(1,1);
+    try { await blob(c, mime[format]); ui.encoders.add(format); }
+    catch (e) { /* Unsupported encoders are omitted from Convert. */ }
+    finally { release(c); }
+  }
+}
 void init();
+
 })();
 </script>
+</main>
 </body>
 </html>

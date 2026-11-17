@@ -1,6 +1,6 @@
 # Console Image Tool
 
-This repository also includes a separate **Image Studio web edition** in
+This repository also includes a separate **Console Image Tool web edition** in
 [`web/`](web/README.md). Open `web/public/index.html` to try it locally; only that
 public folder is intended for website hosting. The Windows console application
 and its portable ZIP remain independent. The web edition is not included in the

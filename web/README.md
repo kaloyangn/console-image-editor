@@ -1,6 +1,6 @@
-# Image Studio — Web edition
+# Console Image Tool — Web edition
 
-A separate browser companion to Console Image Tool. This edition processes
+A browser mirror of the Console Image Tool workflow. This edition processes
 user-selected files locally and creates downloadable results. It does not run
 the Windows application or require ImageMagick, an account, installation, a
 backend, a CDN or a paid service.
@@ -11,19 +11,49 @@ Open `public/index.html` in a current desktop browser. No build or dependency
 installation is required. A static HTTP preview is also possible; the app has no
 hard-coded hostname, route fallback or absolute asset paths.
 
-1. Choose/drop images, or use **Try a sample**.
-2. Choose a background, inversion, compression or format conversion.
-3. For multiple operations, add up to eight steps to the action chain. Move
-   steps up or remove them. When a chain exists, Process uses the chain rather
-   than the currently displayed unadded action.
-4. Process the checked files. Click a file to preview its original/result.
-5. Download individual outputs or one ZIP containing all ready results.
+1. Drop image files onto the page, or press **Enter** to choose files. **D** on
+   the drop screen loads a synthetic sample without opening a file picker.
+2. Use **Up/Down arrows** to highlight an action and **Enter** to activate it.
+   Menus wrap; Home/End choose first/last. Clicking a row also activates it.
+3. After processing, a single result downloads as an image; a batch downloads
+   as one ZIP. If the browser blocks a download, use the result's Download link.
+4. Results show before/after dimensions, size, elapsed time and errors. Press
+   **Enter** to choose more files, **A** to choose another action for the current
+   originals, or **R** to repeat the last action. Preview is an optional link.
 
-Every run starts from the original files. **Restore last** restores the last
-processed recipe; it does not reprocess automatically. Recipe export/import
-transfers settings only, using a versioned JSON file. The app does not save
-images, results or settings to localStorage/IndexedDB. Reload closes the session.
-Stop finishes the current file and leaves remaining files unprocessed.
+The black background, monospace text, cyan banner/highlight and sequential menus
+follow the desktop console. There is no separate editor dashboard or mandatory
+preview/confirmation step before processing.
+
+| Action-menu shortcut | Behavior |
+| --- | --- |
+| C | Compress PNG strictly below 5 MiB |
+| W / B | White / black background + 20 px per side |
+| H | Custom hex color, then padding prompts; Enter accepts default padding 20 |
+| I | Invert RGB while preserving alpha |
+| F | Format menu: PNG, JPEG, WebP where available, ICO; JPEG/WebP quality prompt |
+| A | Build a chain of up to eight actions |
+| R | Repeat the last action/chain on the current originals |
+| O | Automatic downloads, always ZIP, or manual result links |
+| M | Explain fixed metadata stripping and browser limitations |
+| S | Select/remove loaded images: Space toggles, Delete removes, G continues |
+
+In the chain menu, action letters append steps in order. Backspace undoes the
+last step. Enter activates the highlighted row; after adding a step, the **Run
+action chain** row is selected so Enter runs it. Arrow navigation can also select
+an action to append. Custom color/format prompts return to the chain when done.
+Put compression last if the final output must remain below 5 MiB.
+
+Esc backs out of a menu/prompt. During processing it stops after the current
+file. At the drop prompt it pauses the session instead of closing a browser tab.
+A new drop selects the new batch; prior loaded images/results remain available
+through selection/results menus until removed. Clear in the selection menu
+releases all loaded images/results. Every run starts from the original files.
+
+Recipe export/import transfers settings only using versioned JSON; existing
+version 1 recipes from the previous UI remain compatible. Import opens the chain
+for review rather than running automatically. The app does not save images,
+results or settings to localStorage/IndexedDB. Reload closes the session.
 
 ## Supported behavior
 
@@ -99,12 +129,7 @@ web/
   AGENTS.md          browser-edition guidance
   README.md          this guide (not a deployment file)
   public/
-    index.html       complete browser application; canonical source
-  deploy/            drag the contents of this folder into the FTP web root
-    console-image-editor/
-      index.html     ready-to-deploy copy, identical to public/index.html
-  release/
-    Image-Studio-Web.zip   web-only recipient package, ignored by Git
+    index.html       complete browser application; upload this one file
 ```
 
 Git was initialized on `main` with the desktop baseline in a separate initial
@@ -113,42 +138,34 @@ feature branches for future work if useful; a permanent branch split would make
 it harder to view and share both editions together. Check `git remote -v` for the
 current GitHub state; local version control does not imply a published remote.
 
-## Build and package
+## Build and deploy
 
 Build command: **none**. Edit the inline CSS/classic JavaScript in
 `public/index.html`. No `type=module`, runtime imports, external scripts, external
 SVG assets, WASM or server config is used. Do not introduce a normal framework
 module build without adapting it to the shared hosting guide.
 
-From the repository root, refresh the deployment folder and separate web package
-after editing the canonical application:
-
-```powershell
-New-Item -ItemType Directory -Path web\release -Force | Out-Null
-New-Item -ItemType Directory -Path web\deploy\console-image-editor -Force | Out-Null
-Copy-Item -LiteralPath web\public\index.html -Destination web\deploy\console-image-editor\index.html -Force
-Compress-Archive -LiteralPath web\deploy\console-image-editor -DestinationPath web\release\Image-Studio-Web.zip -Force
-```
-
-The ZIP contains `console-image-editor/index.html`, matching the deployment
-folder layout. Do not include development files, desktop executables, private
-images, Git metadata, credentials or temporary QA pages. The existing desktop
-ZIP recipe/package stays independent.
+There is one web app file: **`web/public/index.html`**. It contains the CSS,
+classic JavaScript, processing engine and ZIP-result creation code. No other
+dependencies or web release/deployment copies are needed. The user explicitly
+requested removal of the redundant web `deploy/` and `release/` folders.
+The desktop portable ZIP remains independent.
 
 ## Manual Vivacom deployment
 
 
-1. Open **`web/deploy/`** locally, or extract the web ZIP. Either contains the
-   ready-to-upload **`console-image-editor`** folder.
+1. Open **`web/public/`** locally. Its `index.html` is the complete web app.
 2. In FileZilla, use your established Vivacom connection. Keep FTP credentials
    out of app files and logs. The supplied audit reports unencrypted FTP.
 3. Open your website's document root in FileZilla's remote pane. Confirm the
    actual document root in your connection; no server path is assumed.
-4. Drag the **contents of `web/deploy/`** (the `console-image-editor` folder) into
-   that remote root. Do not upload the enclosing `web` or `deploy` folders.
-   The resulting remote file must be `console-image-editor/index.html` relative
-   to your web root. For an update, keep the previous file locally for rollback
-   and replace only this app's file; leave your homepage and other apps alone.
+4. Create/open a **`console-image-editor`** folder under that remote root, then
+   drag **`web/public/index.html`** into it. Do not upload the enclosing `web` or
+   `public` folder. The resulting remote file must be
+   `console-image-editor/index.html` relative to your web root. For an update,
+   keep the previous HTML locally for rollback and replace only this app's file;
+   leave your homepage and other apps alone. No Windows executables, documentation,
+   Git files, private images or settings belong in the deployment.
 5. Visit **`mysite.com/console-image-editor/index.html`**, substituting your actual
    hostname and its available HTTP/HTTPS scheme. No installation, build or server
    configuration is needed. `/console-image-editor/` can also use the host's
@@ -166,23 +183,29 @@ Temporary automated image checks and interactive browser checks are used during
 development; fixtures and harnesses are removed before handoff. Results from
 desktop tests do not establish correctness of this edition.
 
-Observed on 18 November 2026 in the local in-app Chromium browser: **30/30
-integration checks passed**, covering pixel-level backgrounds/alpha/inversion,
-validation, original-byte preservation, SVG sizing/gradients/rejections, SVGZ,
-APNG rejection, animated GIF first frame, JPEG/WebP round trips, ICO headers and
-dimensions, small/large PNG compression, output naming, ZIP structure, batch
-chains, reruns, isolated per-file failures and stop/restart. The real UI sample/action-chain
-flow and ZIP download passed; the downloaded PNG was independently extracted
-with .NET and inspected with the bundled Windows ImageMagick engine. Desktop
-and 390-pixel responsive layouts were observed with no horizontal overflow on
-the latter, and no production-page console errors were observed in these flows.
+Observed on 18 November 2026 in the local in-app Chromium browser after the console
+redesign: **24/24 automated checks passed**. They cover menu wrapping/Home/End,
+file-drop transition, arrow/Enter activation, repeat, custom background prompts
+and validation, Esc/back behavior, chains/undo/eight-step limits, format/quality
+prompts, output modes, metadata explanation, selection/removal, compatible recipe
+imports, pause/resume, pixel-level backgrounds/inversion, SVG/SVGZ rendering and
+unsafe-content rejection, animated GIF first frame, output encoders, large PNG
+compression, stop/restart and isolated per-file failures. The processing engine
+was retained from the previously tested edition (30 checks before this redesign).
 
-The browser-automation file-picker flow stalled, so real picker selection,
-drag/drop, recipe file export/import UI and stop/restart remain unverified
-interactively. Decoder/batch functions were exercised by the temporary harness.
-The suite uses synthetic fixtures, not production artwork. Safari/Firefox,
-physical mobile devices, large real-world batches, complex SVG fidelity and
-actual Vivacom deployment remain unverified.
+The real keyboard UI was also exercised: D loads a sample, Down highlights White,
+and Enter processes it and automatically downloads a PNG. A two-image run
+automatically downloaded one ZIP. Production-page console errors were absent in
+the checked flows. The downloaded PNG was independently inspected with the
+bundled ImageMagick engine; the ZIP contained two PNGs with distinct names and
+the expected dimensions. The console menu was observed at desktop and 390-pixel
+width with no horizontal overflow at the smaller size. Tests use synthetic
+fixtures rather than production artwork.
+
+Actual browser file-picker selection, native drag/drop from Explorer, recipe
+file chooser/export UI, Safari/Firefox, physical mobile devices, large real-world
+batches, complex SVG fidelity and actual Vivacom deployment remain unverified.
+The temporary harness tested synthetic drop events and recipe import data.
 
 Actual-host acceptance checklist (pending until observed on Vivacom):
 
