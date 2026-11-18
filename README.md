@@ -36,8 +36,8 @@ the bundled portable engine taking precedence when present.
 
 ## Small windows and window memory
 
-The batch launcher opens a dedicated classic console, independent of Windows
-Terminal tabs. Text wraps at word boundaries, menus adapt when resized and scroll
+The batch launcher runs directly in the console opened by Windows. Text wraps at
+word boundaries, menus adapt when resized and scroll
 when too short, and narrow batch results use one file per block.
 
 The last normal window rectangle is sampled every half second and saved per user:
@@ -49,7 +49,8 @@ restored on the next launch and clamped to an available monitor's working area,
 including after a monitor is disconnected. Delete `window.json` to reset it.
 Close after leaving the window in its new position for at least half a second.
 Concurrent app windows share this setting; the latest changed window wins.
-Launch through the batch file for an independently movable app window.
+Window restoration works best in a classic console. Windows Terminal may control
+window placement itself. Reliable startup takes precedence over forced placement.
 
 ## Actions
 
@@ -149,3 +150,13 @@ or updating it. `SOURCE.json` records the original archive URL and checksum. See
 
 If startup fails, the window displays the error and waits for Enter rather than
 closing immediately. Include that error message when reporting a problem.
+
+
+The desktop session keeps prior operations in console scrollback. Arrow menus
+redraw only their own rows. After processing, drop the next image and choose
+[R] Repeat last to reuse the previous action or complete chain.
+
+Startup uses the original direct batch-to-PowerShell approach. A separate console
+launcher was removed after startup regressions; image-processing features were
+retained. On an application error, Image_Tool-error.log is written beside the
+batch file when the folder is writable.

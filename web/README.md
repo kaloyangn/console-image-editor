@@ -46,7 +46,11 @@ Put compression last if the final output must remain below 5 MiB.
 Esc backs out of a menu/prompt. During processing it stops after the current
 file. At the drop prompt it pauses the session instead of closing a browser tab.
 A new drop selects the new batch; prior loaded images/results remain available
-through selection/results menus until removed. Clear in the selection menu
+in the visible operation transcript. Repeated runs append summaries rather than
+replacing earlier operations. The persistent Repeat last button works on the
+current selection, including a newly uploaded batch. Earlier summaries remain
+after removing an input; download/preview links apply to its latest live output.
+Clear in the selection menu
 releases all loaded images/results. Every run starts from the original files.
 
 The app does not save images,
@@ -226,3 +230,10 @@ Actual-host acceptance checklist (pending until observed on Vivacom):
 Implementation references: [Canvas encoding](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob),
 [image bitmap decoding](https://developer.mozilla.org/en-US/docs/Web/API/Window/createImageBitmap),
 [gzip decompression](https://developer.mozilla.org/en-US/docs/Web/API/DecompressionStream).
+
+Repeat/history regression checks: desktop-style new batches, repeated actions,
+changed actions, failed runs, selection removal, explicit clear, and immutable
+text summaries passed 16 state/DOM checks with a mocked canvas. This verifies
+state transitions, not browser rendering or real image encoding. The local-file
+preview was blocked by browser URL policy; these changes have not been visually
+verified in a browser or on Vivacom.
