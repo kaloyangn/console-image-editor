@@ -50,7 +50,10 @@ including after a monitor is disconnected. Delete `window.json` to reset it.
 Close after leaving the window in its new position for at least half a second.
 Concurrent app windows share this setting; the latest changed window wins.
 Window restoration works best in a classic console. Windows Terminal may control
-window placement itself. Reliable startup takes precedence over forced placement.
+window placement itself. Restoration is asynchronous and never activates or raises
+the console; it is skipped during mouse capture or an active move/resize operation.
+The console host manages its own text buffer. Reliable startup takes precedence
+over forced placement.
 
 ## Actions
 

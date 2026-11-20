@@ -1,8 +1,8 @@
 release/
 web/.qa-temp/
+Image_Tool-error.log
 /VIVACOM_WEB_APP_GUIDE.md
 /AGENTS.md
 /web/AGENTS.md
-Image_Tool-error.log
 .env
 .env.*

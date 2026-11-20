@@ -33,7 +33,27 @@ public static class ImageToolWindow
 {
     [StructLayout(LayoutKind.Sequential)] public struct Rect { public int Left, Top, Right, Bottom; }
     [DllImport("kernel32.dll")] public static extern IntPtr GetConsoleWindow();
-    [DllImport("user32.dll")] public static extern bool MoveWindow(IntPtr h, int x, int y, int w, int height, bool repaint);
+    [DllImport("user32.dll")] static extern bool SetWindowPos(IntPtr h, IntPtr after, int x, int y, int w, int height, uint flags);
+    [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr h, IntPtr processId);
+    [StructLayout(LayoutKind.Sequential)] struct GuiThreadInfo {
+        public uint Size, Flags;
+        public IntPtr Active, Focus, Capture, MenuOwner, MoveSize, Caret;
+        public Rect CaretRect;
+    }
+    [DllImport("user32.dll")] static extern bool GetGUIThreadInfo(uint threadId, ref GuiThreadInfo info);
+    public static void RestoreBounds(IntPtr handle, int x, int y, int width, int height)
+    {
+        if (!IsWindowVisible(handle) || IsIconic(handle) || IsZoomed(handle)) return;
+        var info = new GuiThreadInfo();
+        info.Size = (uint)Marshal.SizeOf(typeof(GuiThreadInfo));
+        uint threadId = GetWindowThreadProcessId(handle, IntPtr.Zero);
+        if (threadId == 0 || !GetGUIThreadInfo(threadId, ref info)) return;
+        // Leave active mouse capture and the host's move/resize loop alone.
+        if (info.Capture != IntPtr.Zero || info.MoveSize != IntPtr.Zero || (info.Flags & 2) != 0) return;
+        // The console belongs to another process. Post the request; never activate or reorder it.
+        const uint NoZOrder = 0x0004, NoActivate = 0x0010, AsyncWindowPos = 0x4000;
+        SetWindowPos(handle, IntPtr.Zero, x, y, width, height, NoZOrder | NoActivate | AsyncWindowPos);
+    }
     [DllImport("user32.dll")] static extern bool GetWindowRect(IntPtr h, out Rect r);
     [DllImport("user32.dll")] static extern bool IsIconic(IntPtr h);
     [DllImport("user32.dll")] static extern bool IsZoomed(IntPtr h);
@@ -172,10 +192,9 @@ function Initialize-WindowMemory {
         $height = [Math]::Min($bounds.Height, $area.Height)
         $x = [Math]::Max($area.Left, [Math]::Min($bounds.X, $area.Right - $width))
         $y = [Math]::Max($area.Top, [Math]::Min($bounds.Y, $area.Bottom - $height))
-        # Remove the classic console's horizontal scrollbar before applying the pixel rectangle.
-        try { [Console]::BufferWidth = [Console]::WindowWidth } catch { }
-        [ImageToolWindow]::MoveWindow($handle, $x, $y, $width, $height, $true) | Out-Null
-        try { [Console]::BufferWidth = [Console]::WindowWidth } catch { }
+        # Let the host manage its buffer. Synchronous buffer/window resizing can interfere
+        # with mouse capture; the native helper only posts an idle, non-activating restore.
+        [ImageToolWindow]::RestoreBounds($handle, $x, $y, $width, $height)
         [ImageToolWindow]::Start($handle, $statePath)
     }
     catch { Write-UiText "Window memory unavailable: $($_.Exception.Message)" -ForegroundColor Yellow }
