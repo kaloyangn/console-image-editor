@@ -7,7 +7,9 @@ backend, a CDN or a paid service.
 
 ## Open and use
 
-Open `public/index.html` in a current desktop browser. No build or dependency
+Download or clone the repository, then open `web/public/index.html` in a current
+desktop browser. GitHub's file view displays source rather than running the app.
+No build or dependency
 installation is required. A static HTTP preview is also possible; the app has no
 hard-coded hostname, route fallback or absolute asset paths.
 
@@ -120,120 +122,78 @@ remote resource requests. Browser/OS download and temporary-file handling remain
 outside the app's control. An HTTP-delivered page can be tampered with in transit;
 local processing does not make HTTP suitable for sensitive images.
 
-## Project organization
+## Files and hosting
 
-```text
-Image_Tool.bat       existing Windows application
-ImageMagick/         existing Windows engine and notices
-release/             existing desktop portable ZIP
-web/
-  AGENTS.md          browser-edition guidance
-  README.md          this guide (not a deployment file)
-  public/
-    index.html       complete browser application; upload this one file
-```
+[`public/index.html`](public/index.html) is the complete browser application,
+including its CSS, JavaScript, image processing and ZIP export. There is no build
+command, dependency installation or backend. Edit this file directly; no separate
+release or deployment copy is needed. The Windows files in the repository root
+are independent and are not needed for web hosting.
 
-Git was initialized on `main` with the desktop baseline in a separate initial
-commit. Both editions live together, separated by directory. Create temporary
-feature branches for future work if useful; a permanent branch split would make
-it harder to view and share both editions together. Check `git remote -v` for the
-current GitHub state; local version control does not imply a published remote.
+Any static host that serves HTML and allows the page's inline CSS and JavaScript
+can serve this app. Your hosting provider does not need to be your internet
+service provider. Server-side ImageMagick, PHP, Node.js and databases are not
+required.
 
-## Build and deploy
+### Deploy to a static host
 
-Build command: **none**. Edit the inline CSS/classic JavaScript in
-`public/index.html`. No `type=module`, runtime imports, external scripts, external
-SVG assets, WASM or server config is used. Do not introduce a normal framework
-module build without adapting it to the shared hosting guide.
+1. Choose a static host or an existing website's public document root. Use the
+   provider's upload interface, deployment workflow, or SFTP/FTPS client as
+   supported by that host. Keep credentials outside the repository.
+2. Upload **only `web/public/index.html`**. For a subdirectory installation,
+   create a folder such as `console-image-editor` in the document root and put
+   `index.html` inside it. Do not upload the enclosing `web/` or `public/` folder
+   unless you intend those names to appear in the URL.
+3. Open the resulting address, for example
+   `https://example.com/console-image-editor/index.html`. The shorter
+   `/console-image-editor/` address also works if the host serves `index.html`
+   as its directory index. The app uses no hard-coded hostname or asset paths.
+4. Check that the host serves the file as HTML and that its security policy
+   permits the inline scripts and styles. No route rewrites are required.
+5. Test the checklist below in your target browsers. For updates, retain the
+   previous HTML for rollback, replace the deployed file and refresh the browser
+   cache. Leave unrelated site files untouched.
 
-There is one web app file: **`web/public/index.html`**. It contains the CSS,
-classic JavaScript, processing engine and ZIP-result creation code. No other
-dependencies or web release/deployment copies are needed. The user explicitly
-requested removal of the redundant web `deploy/` and `release/` folders.
-The desktop portable ZIP remains independent.
+Use HTTPS for a public deployment. Image processing stays in the browser, but
+secure delivery still matters because a modified page could access selected
+images. Hosting configuration and deployment are separate from downloading this
+repository; no particular provider or live deployment is implied.
 
-## Manual Vivacom deployment
+## Verification and known gaps
 
+Development checks have covered keyboard menus, custom backgrounds, inversion,
+SVG/SVGZ rendering and rejection of unsafe SVG, first-frame GIF handling, output
+encoders, PNG compression, action chains, cancellation and per-file failures.
+Local Chromium checks also exercised automatic single-image and batch-ZIP
+downloads and a narrow viewport. These checks used synthetic fixtures.
 
-1. Open **`web/public/`** locally. Its `index.html` is the complete web app.
-2. In FileZilla, use your established Vivacom connection. Keep FTP credentials
-   out of app files and logs. The supplied audit reports unencrypted FTP.
-3. Open your website's document root in FileZilla's remote pane. Confirm the
-   actual document root in your connection; no server path is assumed.
-4. Create/open a **`console-image-editor`** folder under that remote root, then
-   drag **`web/public/index.html`** into it. Do not upload the enclosing `web` or
-   `public` folder. The resulting remote file must be
-   `console-image-editor/index.html` relative to your web root. For an update,
-   keep the previous HTML locally for rollback and replace only this app's file;
-   leave your homepage and other apps alone. No Windows executables, documentation,
-   Git files, private images or settings belong in the deployment.
-5. Visit **`mysite.com/console-image-editor/index.html`**, substituting your actual
-   hostname and its available HTTP/HTTPS scheme. No installation, build or server
-   configuration is needed. `/console-image-editor/` can also use the host's
-   directory index behavior.
-6. Follow the actual-host checklist below. For an update, upload the replacement
-   HTML and hard-refresh. Do not rely on configurable cache/rewrite/MIME headers.
-   Roll back by restoring the previous `index.html` if needed.
+Later sample/recipe removal received syntax and element-reference checks.
+Repeat/history changes passed 16 state/DOM checks with a mocked canvas; those
+changes have not received a full visual browser check or real image-encoding
+regression run. Desktop tests do not establish browser-edition correctness.
 
-No upload, account change, hosting migration or live probe is part of this local
-build. HTTPS availability and actual-host browser behavior remain unverified.
+Native file-picker selection and Explorer drag/drop, Safari/Firefox, physical
+mobile devices, large real-world batches, complex SVG fidelity and hosted
+deployment remain unverified. Synthetic drop events are not native drag/drop
+validation.
 
-## Verification
+### Check your deployment
 
-Temporary automated image checks and interactive browser checks are used during
-development; fixtures and harnesses are removed before handoff. Results from
-desktop tests do not establish correctness of this edition.
-
-Observed on 18 November 2026 in the local in-app Chromium browser after the console
-redesign, automated checks covered menu wrapping/Home/End,
-file-drop transition, arrow/Enter activation, repeat, custom background prompts
-and validation, Esc/back behavior, chains/undo/eight-step limits, format/quality
-prompts, output modes, metadata explanation, selection/removal,
-pause/resume, pixel-level backgrounds/inversion, SVG/SVGZ rendering and
-unsafe-content rejection, animated GIF first frame, output encoders, large PNG
-compression, stop/restart and isolated per-file failures. The processing engine
-was retained from the previously tested edition (30 checks before this redesign).
-
-The real keyboard UI was also exercised: after loading an image, Down highlights
-White, and Enter processes it and automatically downloads a PNG. A two-image run
-automatically downloaded one ZIP. Production-page console errors were absent in
-the checked flows. The downloaded PNG was independently inspected with the
-bundled ImageMagick engine; the ZIP contained two PNGs with distinct names and
-the expected dimensions. The console menu was observed at desktop and 390-pixel
-width with no horizontal overflow at the smaller size. Tests use synthetic
-fixtures rather than production artwork.
-
-After removing the additional sample and recipe features, inline script syntax
-and UI element references were checked again.
-
-Actual browser file-picker selection, native drag/drop from Explorer,
-Safari/Firefox, physical mobile devices, large real-world
-batches, complex SVG fidelity and actual Vivacom deployment remain unverified.
-The temporary harness tested synthetic drop events.
-
-Actual-host acceptance checklist (pending until observed on Vivacom):
-
-- Directory URL, explicit `index.html`, direct navigation and reload work.
-- Page layout, inline code and generated previews load without console errors or
-  remote/CDN requests; test target Opera/Chrome/Edge/Firefox/Safari as relevant.
-- Select/drop representative images. Verify transparency, trim, backgrounds,
-  padding, inversion, chains, original preservation and actionable failures.
-- Verify SVG/SVGZ on the actual browser, including rejection cases; compare real
-  logos visually, especially fonts and filters.
-- Download PNG/JPEG/WebP/ICO and a batch ZIP; open them in independent software.
-  Check dimensions, naming, first-frame behavior and the strict PNG byte limit.
-- Reload clears image state; no browser persistence or backend storage should
-  be expected.
-- Test a small viewport, keyboard operation, selection, cancellation and a modest
-  batch. Do not fill hosting quota or stress-test the shared service.
+- Open both the directory URL (if supported) and explicit `index.html`; reload
+  and navigate directly to the page.
+- Check layout, keyboard navigation, generated previews and browser console
+  errors. Confirm the app makes no remote resource or upload requests.
+- Select and drop representative images. Check transparency, trim, backgrounds,
+  padding, inversion, chains, repeat on a new batch and clear error messages.
+- Compare real SVG/SVGZ logos visually, especially fonts and filters; check
+  unsupported-content rejection.
+- Download PNG/JPEG/WebP/ICO and a batch ZIP; open them independently. Check
+  dimensions, naming, first-frame behavior and PNG output below 5,242,880 bytes.
+- Check operation history across uploads and repeated actions. Reload should
+  clear the session; images and settings are not persisted by the app.
+- Test a small viewport, selection, cancellation and a modest batch on the
+  browsers and devices you intend to support.
 
 Implementation references: [Canvas encoding](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob),
 [image bitmap decoding](https://developer.mozilla.org/en-US/docs/Web/API/Window/createImageBitmap),
 [gzip decompression](https://developer.mozilla.org/en-US/docs/Web/API/DecompressionStream).
-
-Repeat/history regression checks: desktop-style new batches, repeated actions,
-changed actions, failed runs, selection removal, explicit clear, and immutable
-text summaries passed 16 state/DOM checks with a mocked canvas. This verifies
-state transitions, not browser rendering or real image encoding. The local-file
-preview was blocked by browser URL policy; these changes have not been visually
-verified in a browser or on Vivacom.

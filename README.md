@@ -1,33 +1,41 @@
 # Console Image Tool
 
-This repository also includes a separate **Console Image Tool web edition** in
-[`web/`](web/README.md). Open `web/public/index.html` to try it locally; only that
-public folder is intended for website hosting. The Windows console application
-and its portable ZIP remain independent. The web edition is not included in the
-desktop portable ZIP.
+An image editor for logos and other images, with a Windows console edition and
+a separate single-file browser edition. Both support batch processing,
+backgrounds, conversion, RGB inversion, compression and ordered action chains.
+Original input files are preserved.
 
-A local Windows console image editor for logos and other images. Batch processing,
-backgrounds, conversion, RGB inversion and compression. Originals are preserved;
-existing output names receive a numbered suffix instead of being overwritten.
+| Edition | Start here | Requirements |
+| --- | --- | --- |
+| Windows console | Run `Image_Tool.bat` from a downloaded copy of this repository | Windows 10/11 x64; bundled ImageMagick engine |
+| Browser | Open `web/public/index.html` locally after downloading | A current desktop browser; no installation or build step |
 
-## Run the portable edition
+See the [web edition README](web/README.md) for browser features, limitations and
+static hosting instructions. The editions have different codec support; the
+browser application does not use the Windows engine.
 
-1. Extract **all** of `Console-Image-Tool-Portable.zip` into a writable folder.
-2. Double-click `Image_Tool.bat`.
-3. Drop images or a folder into the window, or drop them onto the batch file.
-4. Choose an action with arrows and Enter, or its displayed letter shortcut.
+## Run on Windows
+
+1. Download this repository using GitHub's **Code → Download ZIP** and extract
+   the whole archive, or clone the repository.
+2. Keep `Image_Tool.bat` and `ImageMagick/` together in a writable folder.
+3. Double-click `Image_Tool.bat`.
+4. Drop images or a folder into the window, or drop them onto the batch file.
+5. Choose an action with arrows and Enter, or its displayed letter shortcut.
+
+There is no separate portable application ZIP tracked in this repository.
+GitHub's source ZIP contains both editions; only `Image_Tool.bat` and
+`ImageMagick/` are needed to run the Windows application. Existing output names
+receive a numbered suffix instead of being overwritten.
 
 No ImageMagick installation, Python, PowerShell 7, admin installation, account or
 network connection is needed on the recipient's computer. The package uses
 Windows PowerShell 5.1, .NET Framework and the Windows classic console host.
 The included engine is for Windows x64 (Windows 10/11).
 
-**Managed devices:** portable does not override company application control.
-If IT blocks executable files, batch scripts, PowerShell, or runtime C# compilation,
-IT must approve the package. `ExecutionPolicy Bypass` applies to this process;
-it does not override Group Policy, AppLocker or WDAC. An admin password required
-for *installing* software can be avoided; a policy forbidding *running* software
-cannot be bypassed by putting it in a ZIP.
+**Managed devices:** portable operation does not bypass application-control
+policies. If your organization blocks executable files, batch scripts,
+PowerShell or runtime C# compilation, obtain approval from IT.
 
 Keep `Image_Tool.bat` and the `ImageMagick` folder together. All application code,
 including the PowerShell and window-memory helper, is embedded in the batch file.
@@ -126,24 +134,38 @@ editable vector paths. JPEG and BMP flatten transparency onto white. Metadata is
 stripped by default. Compression can be lossy and can produce a larger file than
 the input while still meeting the limit.
 
-## Project files and sharing
+## Repository layout
 
-- `Image_Tool.bat`: the complete application and launcher.
-- `ImageMagick/`: the portable image engine, configuration and license notices.
-- `README.md`: user instructions.
-- `AGENTS.md`: project context for future coding agents.
-- `release/Console-Image-Tool-Portable.zip`: the ready-to-share package.
-- `.gitignore`: excludes generated release ZIPs from Git tracking.
+```text
+Image_Tool.bat          Windows application and launcher
+ImageMagick/            portable Windows x64 engine, configuration and notices
+README.md              Windows usage and project overview
+web/
+  README.md            browser usage and static hosting instructions
+  public/
+    index.html         complete browser application
+```
 
-Send the ZIP in `release`; recipients extract it and run the batch file. There is
-no build step or download needed to use the current package. Build caches and
-test artifacts are not part of this project.
+Generated desktop packages in `release/` are ignored by Git and are not part of
+the tracked repository. The browser application has no separate deployment copy
+or build output.
 
-If the application is changed later, recreate the ZIP from the updated files:
+## Create a desktop package
+
+To share only the Windows edition, run this from the repository root in
+PowerShell:
 
 ```powershell
+New-Item -ItemType Directory -Path release -Force | Out-Null
 Compress-Archive -LiteralPath Image_Tool.bat, README.md, ImageMagick -DestinationPath release\Console-Image-Tool-Portable.zip -Force
 ```
+
+This creates a local ZIP containing the application, this README and the engine.
+Recipients extract the entire package and run `Image_Tool.bat`. Recreate it after
+updating those files. Web files, user images and settings are not included. Links
+to the web edition in this README refer to the full repository.
+
+## Third-party software
 
 ImageMagick 7.1.2-36 Q16 x64 is supplied by **ImageMagick Studio LLC**. Preserve the
 engine's configuration, `LICENSE.txt`, `NOTICE.txt` and `SOURCE.json` when sharing
@@ -151,15 +173,20 @@ or updating it. `SOURCE.json` records the original archive URL and checksum. See
 [ImageMagick](https://imagemagick.org/) and the
 [official release](https://github.com/ImageMagick/ImageMagick/releases/tag/7.1.2-36).
 
-If startup fails, the window displays the error and waits for Enter rather than
-closing immediately. Include that error message when reporting a problem.
-
+## Troubleshooting and verification limits
 
 The desktop session keeps prior operations in console scrollback. Arrow menus
 redraw only their own rows. After processing, drop the next image and choose
 [R] Repeat last to reuse the previous action or complete chain.
 
-Startup uses the original direct batch-to-PowerShell approach. A separate console
-launcher was removed after startup regressions; image-processing features were
-retained. On an application error, Image_Tool-error.log is written beside the
-batch file when the folder is writable.
+If startup fails, the window displays the error and waits for Enter. When the
+application folder is writable, it also saves `Image_Tool-error.log` beside the
+batch file. Include the error message, Windows version and console host when
+reporting a problem; avoid sharing private image contents or paths.
+
+Processing checks have covered SVG/SVGZ sizing, backgrounds, transparency,
+padding, chains, output naming, original preservation and format round trips
+with the bundled engine. Direct CMD launch and keyboard menu navigation have
+also been exercised. Interactive resize/reopen, monitor changes and DPI behavior
+remain unverified. Complex SVG filters, missing fonts and linked assets can
+affect rendering; inspect results before production use.
